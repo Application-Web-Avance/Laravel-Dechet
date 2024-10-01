@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Centrederecyclage;
+use App\Models\Entrepriserecyclage;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Contratrecyclage extends Model
 {
@@ -34,4 +37,14 @@ class Contratrecyclage extends Model
      * @var bool
      */
     public $timestamps = true;
+
+    public function entrprise(): BelongsTo
+    {
+        return $this->belongsTo(Entrepriserecyclage:: class);
+    }
+
+    public function centre(): BelongsTo
+    {
+        return $this->belongsTo(Centrederecyclage:: class);
+    }
 }

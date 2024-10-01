@@ -8,23 +8,26 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('participant', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('collecte_dechets_id')->constrained('collectedechets')->onDelete('cascade');
+            $table->string('nom');
+            $table->string('email');
+            $table->string('telephone');
             $table->timestamps();
-            // Contrainte d'unicité pour éviter la double inscription du même utilisateur à un même événement
-            $table->unique(['user_id', 'collecte_dechets_id']);
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('participant');
     }

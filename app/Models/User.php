@@ -67,19 +67,4 @@ class User extends Authenticatable
     {
         return $this->hasOne(Demanderole::class);
     }
-
-
-    // Relation One-to-Many avec CollecteDechet (Responsable des collectes)
-    public function collecteDechets()
-    {
-        return $this->hasMany(Collectedechets::class);
-    }
-
-    // Relation Many-to-Many avec CollecteDechet via la table de pivot (Participant aux collectes)
-    public function participations()
-    {
-        return $this->belongsToMany(Collectedechets::class, 'participant')
-                    ->withTimestamps();
-    }
-
 }

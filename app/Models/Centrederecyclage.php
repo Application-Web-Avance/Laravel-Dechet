@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Contratrecyclage;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Centrederecyclage extends Model
 {
@@ -33,4 +35,10 @@ class Centrederecyclage extends Model
      * @var bool
      */
     public $timestamps = true;
+
+
+    public function contrats(): HasMany
+    {
+        return $this->hasMany(Contratrecyclage:: class,'centre_id') ;
+    }
 }

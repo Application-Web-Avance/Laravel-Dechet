@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BackOfficeController\DashboardControllerB;
-use App\Http\Controllers\BackOfficeController\ExempleController;
-use App\Http\Controllers\FrontOfficeController\HomeController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use App\Http\Controllers\FrontOfficeController\HomeController;
+use App\Http\Controllers\BackOfficeController\ExempleController;
+use App\Http\Controllers\BackOfficeController\DashboardControllerB;
+use App\Http\Controllers\FrontOfficeController\EntrepriseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,6 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 //Prefix pour le backOffice : 
 Route::prefix('back')->group(function () {
-    
 Route::get('/dashboard', [DashboardControllerB::class, 'index']);
 Route::get('/exemple', [ExempleController::class, 'index']);
 
@@ -33,8 +33,13 @@ Route::get('/exemple', [ExempleController::class, 'index']);
 
 //Prefix pour le frontOffice : 
 Route::prefix('front')->group(function () {
-    Route::get('/home', [HomeController::class, 'index']);
-    // Vous pouvez ajouter d'autres routes liées au front-office ici
+    Route::get('/home', [HomeController::class, 'index'])->name('front.home');;
+    Route::get('/entreprise', [EntrepriseController::class, 'index'])->name('front.entreprise.index');
+    Route::post('/entreprises', [EntrepriseController::class, 'store'])->name('entreprises.store');
+    Route::put('/entreprises/{id}', [EntrepriseController::class, 'update'])->name('entreprises.update');
+    Route::delete('/entreprises/{id}', [EntrepriseController::class, 'destroy'])->name('entreprises.destroy');
 });
+
+
 
 

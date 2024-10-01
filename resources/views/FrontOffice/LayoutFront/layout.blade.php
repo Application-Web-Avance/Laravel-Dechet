@@ -23,6 +23,9 @@
         <link href="{{ asset('front content/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
 
 
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
         <!-- Customized Bootstrap Stylesheet -->
         <link href="{{ asset('front content/css/bootstrap.min.css')}}" rel="stylesheet">
 
@@ -92,9 +95,9 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarCollapse">
                         <div class="navbar-nav mx-0 mx-lg-auto">
-                            <a href="index.html" class="nav-item nav-link active">Home</a>
+                            <a href="{{route('front.home')}}" class="nav-item nav-link ">Home</a>
                             <a href="about.html" class="nav-item nav-link">About</a>
-                            <a href="service.html" class="nav-item nav-link">Services</a>
+                            <a href="{{route('front.entreprise.index')}}" class="nav-item nav-link">mes entreprises</a>  
                             <a href="blog.html" class="nav-item nav-link">Blog</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link" data-bs-toggle="dropdown">
@@ -155,6 +158,7 @@
 
     <!-- Modal Search End -->  
         @yield('content')
+        @yield('entreprise_content')
 
        
 

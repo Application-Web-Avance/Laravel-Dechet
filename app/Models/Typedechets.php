@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Typedechets extends Model
+class Typedechet extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class Typedechets extends Model
      *
      * @var string
      */
-    protected $table = 'typedechets'; // You can keep this if the table is named 'typedechets'
+    protected $table = 'typedechets';
 
     /**
      * The attributes that are mass assignable.
@@ -22,7 +22,7 @@ class Typedechets extends Model
      * @var array
      */
     protected $fillable = [
-        'type',    // assuming this is a column name in the table
+        'type',
         'description',
     ];
 
@@ -32,10 +32,4 @@ class Typedechets extends Model
      * @var bool
      */
     public $timestamps = true;
-
-    // Relation One-to-Many avec CollecteDechet
-    public function collecteDechets()
-    {
-        return $this->hasMany(Collectedechets::class); // Make sure the model name is correct here
-    }
 }
