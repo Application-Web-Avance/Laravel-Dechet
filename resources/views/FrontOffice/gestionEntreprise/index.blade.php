@@ -20,7 +20,10 @@
                 <div class="row g-0">
                     <div class="col-4 col-lg-4 col-xl-3">
                         <div class="h-100">
-                            <img src="{{ $entreprise->image_url ?? 'img/company-placeholder.jpg' }}" class="img-fluid h-100 rounded" style="object-fit: cover;" alt="{{ $entreprise->nom }}">
+                        <img src="{{ asset('storage/' . $entreprise->image_url) }}"  
+                            class="img-fluid h-100 rounded" 
+                            style="object-fit: cover;" 
+                            alt="{{ $entreprise->nom }}">
                         </div>
                     </div>
                     <div class="col-8 col-lg-8 col-xl-9">

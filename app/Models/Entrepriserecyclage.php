@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Contratrecyclage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -28,6 +29,9 @@ class Entrepriserecyclage extends Model
         'adresse',
         'numero_siret',
         'specialite',
+        'image_url', 
+        'testimonial',
+        'user_id'
     ];
 
     /**
@@ -40,5 +44,10 @@ class Entrepriserecyclage extends Model
     public function contrats(): HasMany
     {
         return $this->hasMany(Contratrecyclage:: class,'enteprise_id') ;
+    }
+    
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User:: class);
     }
 }
