@@ -22,9 +22,8 @@ class Participant extends Model
      * @var array
      */
     protected $fillable = [
-        'nom',
-        'email',
-        'telephone',
+        'user_id',              // Include user_id to allow mass assignment
+        'collecte_dechets_id',  // Include collecte_dechets_id to allow mass assignment
     ];
 
     /**
@@ -33,5 +32,20 @@ class Participant extends Model
      * @var bool
      */
     public $timestamps = true;
+
+    /**
+     * Get the user associated with the participant.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Get the collecte de déchets associated with the participant.
+     */
+    public function collecteDechets()
+    {
+        return $this->belongsTo(Collectedechets::class, 'collecte_dechets_id');
+    }
 }
-    

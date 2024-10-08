@@ -65,4 +65,6 @@ class CreateNewUser implements CreatesNewUsers
 
         return $user;
     }
+
+    
 }

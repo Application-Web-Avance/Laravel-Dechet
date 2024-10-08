@@ -10,7 +10,7 @@ class Collectedechets extends Model
     use HasFactory;
 
     // Définir les champs autorisés
-    protected $fillable = ['date', 'lieu', 'nbparticipant', 'description', 'type_de_dechet_id', 'user_id'];
+    protected $fillable = ['date', 'lieu', 'nbparticipant','Maxnbparticipant','description', 'type_de_dechet_id', 'user_id', 'image','nomEvent'];
 
     // Relation Many-to-One avec TypeDeDechet
     public function typeDeDechet()
@@ -27,7 +27,8 @@ class Collectedechets extends Model
     // Relation Many-to-Many avec Participant via table pivot
     public function participants()
     {
-        return $this->belongsToMany(User::class, 'participant')
+        return $this->belongsToMany(User::class, 'participant', 'collecte_dechets_id', 'user_id')
                     ->withTimestamps();
     }
+
 }

@@ -28,6 +28,7 @@ class User extends Authenticatable
         'cin', // Assurez-vous que le CIN est inclus
         'date_naissance', // Assurez-vous que la date de naissance est incluse
         'role', // Ajoutez le champ role
+        'nomPrincipale' //c'est la presentation de nom d'entreprise ou nom de centre l'ors creation de compte de user 
     ];
 
     /**

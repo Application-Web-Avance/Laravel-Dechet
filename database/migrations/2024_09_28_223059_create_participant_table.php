@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('participant', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('restrict');
             $table->foreignId('collecte_dechets_id')->constrained('collectedechets')->onDelete('cascade');
             $table->timestamps();
             // Contrainte d'unicité pour éviter la double inscription du même utilisateur à un même événement
