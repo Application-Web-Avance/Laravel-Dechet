@@ -13,10 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CollectDechetsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+
 
 
     // Function to get all records from collectedechets for the authenticated user

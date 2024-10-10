@@ -4,9 +4,17 @@ use App\Http\Controllers\BackOfficeController\CollectDechetsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BackOfficeController\DashboardControllerB;
 use App\Http\Controllers\BackOfficeController\ExempleController;
-use App\Http\Controllers\FrontOfficeController\HomeController;
+use App\Http\Controllers\FrontOfficeController\DashboardControllerF;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FrontOfficeController\ParticipantController;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
+use Laravel\Fortify\Http\Controllers\NewPasswordController;
+use Laravel\Fortify\Http\Controllers\PasswordController;
+use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
+use Laravel\Fortify\Http\Controllers\RegisteredUserController;
+use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
+use Laravel\Jetstream\Http\Controllers\Inertia\UserProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,14 +27,8 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 |
 */
 
-
-// Route::get('/front', function () {
-//     return view('front');
-// });
-//on utilise -> name Utilisation de name pour définir les routes dans les vues exemple <a href="{{ route('evenement.create') }}">Créer un Événement</a>
-
 // Prefix pour le backOffice : 
-Route::prefix('back')->group(function () {
+Route::prefix('back')->middleware('auth')->group(function () { // Ajoutez votre middleware ici
     Route::get('/dashboard', [DashboardControllerB::class, 'index'])->name('dashboard');
     Route::get('/exemple', [ExempleController::class, 'index']);
 
@@ -42,10 +44,9 @@ Route::prefix('back')->group(function () {
     Route::get('/evenement/{id}', [CollectDechetsController::class, 'show'])->name('evenement.show');
 });
 
-
 // Prefix pour le frontOffice : 
-Route::prefix('front')->group(function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('FrontHome');
+Route::prefix('front')->middleware('auth')->group(function () {
+    Route::get('/home', [DashboardControllerF::class, 'index'])->name('FrontHome');
 
     // Fonction pour Participant
     Route::get('/evenement', [ParticipantController::class, 'getAllCollectDechet'])->name('evenementFront.index');
@@ -54,9 +55,41 @@ Route::prefix('front')->group(function () {
     Route::delete('/participant/{id}', [ParticipantController::class, 'supprimerParti'])->name('evenementFront.supprimer');
 });
 
-
-
-//access denied page :
+// Access denied page :
 Route::get('/denied', function () {
     return view('AccessDenied');
 })->name('AccessDenied');
+
+
+
+
+// Public Routes
+Route::get('/', [HomeController::class, 'index'])->name('home'); // Example home route
+
+// Authentication Routes
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+// Registration Routes
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('/register', [RegisteredUserController::class, 'store']);
+
+// Password Reset Routes
+Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
+Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
+
+// Confirm Password Routes
+Route::get('/user/confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
+Route::post('/user/confirm-password', [ConfirmablePasswordController::class, 'store']);
+
+// Two Factor Authentication Routes
+Route::get('/two-factor-challenge', [TwoFactorAuthenticatedSessionController::class, 'index'])->name('two-factor.login');
+Route::post('/two-factor-challenge', [TwoFactorAuthenticatedSessionController::class, 'store']);
+
+// Profile Management Routes
+Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
+Route::put('/user/profile-information', [UserProfileController::class, 'update'])->name('profile.update');
+Route::put('/user/password', [PasswordController::class, 'update'])->name('user.password.update');

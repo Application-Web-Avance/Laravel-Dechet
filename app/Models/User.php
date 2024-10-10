@@ -83,4 +83,14 @@ class User extends Authenticatable
                     ->withTimestamps();
     }
 
+
+    public function getRedirectRoute(): string
+    {
+        return match ($this->role) { 
+            'Responsable_Centre', 'Responsable_Entreprise','admin' => '/back/dashboard',
+            'user' => '/front/home',
+            default => '/login', 
+        };
+    }
+
 }
