@@ -25,17 +25,13 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 // });
 //on utilise -> name Utilisation de name pour définir les routes dans les vues exemple <a href="{{ route('evenement.create') }}">Créer un Événement</a>
 
-
-
-
-//Prefix pour le backOffice : 
+// Prefix pour le backOffice : 
 Route::prefix('back')->group(function () {
-
     Route::get('/dashboard', [DashboardControllerB::class, 'index'])->name('dashboard');
     Route::get('/exemple', [ExempleController::class, 'index']);
 
-    //fonction crud pour CollectDechets(evenement) --> montasser
-    Route::get('/evenement', [CollectDechetsController::class, 'getAllCollect'])->name('evenement.index');;
+    // Fonction CRUD pour CollectDechets
+    Route::get('/evenement', [CollectDechetsController::class, 'getAllCollect'])->name('evenement.index');
     Route::get('/evenement/create', [CollectDechetsController::class, 'createEvent'])->name('evenement.create');
     Route::post('/evenement/store', [CollectDechetsController::class, 'AjouterDechet'])->name('evenement.store');
     Route::get('/evenement/{id}/edit', [CollectDechetsController::class, 'edit'])->name('evenement.edit');
@@ -47,20 +43,17 @@ Route::prefix('back')->group(function () {
 });
 
 
-
-
-//Prefix pour le frontOffice : 
+// Prefix pour le frontOffice : 
 Route::prefix('front')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('FrontHome');
 
-
-
-    //fonction pour Participant(evenement) --> montasser
-    Route::get('/evenement', [ParticipantController::class, 'getAllCollectDechet'])->name('evenementFront.index');;
+    // Fonction pour Participant
+    Route::get('/evenement', [ParticipantController::class, 'getAllCollectDechet'])->name('evenementFront.index');
     Route::post('/evenement/{eventId}/participer', [ParticipantController::class, 'participer'])->name('evenementFront.participer');
     Route::get('/participant', [ParticipantController::class, 'getEventsById'])->name('evenementFront.myEvents');
     Route::delete('/participant/{id}', [ParticipantController::class, 'supprimerParti'])->name('evenementFront.supprimer');
 });
+
 
 
 //access denied page :

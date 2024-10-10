@@ -40,9 +40,8 @@
                                         <tr>
                                             <td>
                                                 @if ($collect->image)
-                                                    <img src="{{ asset('storage/' . $collect->image) }}"
-                                                        alt="Image de l'événement"
-                                                        style="width: 50px; height: 50px; object-fit: cover; border-radius: 20%;">
+                                                <img src="{{ $collect->image ? asset('storage/' . $collect->image) : $defaultImagePath }}" alt="Image de l'événement" style="width: 50px; height: 50px; object-fit: cover; border-radius: 20%;">
+
                                                 @else
                                                     <img src="{{ asset('storage/images/collectes/Collectdechet.jpg') }}"
                                                         alt="Image par défaut"
