@@ -21,6 +21,7 @@ class FortifyServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+    //ce code est le responsable de redirection l'ors je clicker sur boutton connecter dans login ( ce relier a code de model user )
     public function register(): void
     {
         // Bind the LoginResponse to use custom logic

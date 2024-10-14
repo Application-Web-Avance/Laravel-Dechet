@@ -110,11 +110,20 @@
                             <div class="dropdown-menu">
                                 <a href="{{ route('evenementFront.index') }}" class="dropdown-item">Liste des
                                     événements</a>
-                                    <a href="{{ route('evenementFront.myEvents') }}" class="dropdown-item">Mes Participations</a>
-                                </div>
+                                <a href="{{ route('evenementFront.myEvents') }}" class="dropdown-item">Mes
+                                    Participations</a>
+                            </div>
                         </div>
 
                         <a href="contact.html" class="nav-item nav-link">Contact</a>
+                        <!-- Logout form -->
+                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="nav-item nav-link"
+                                style="border: none; background: none; cursor: pointer;">
+                                Logout
+                            </button>
+                        </form>
                         <div class="nav-btn px-3">
                             <button class="btn-search btn btn-primary btn-md-square rounded-circle flex-shrink-0"
                                 data-bs-toggle="modal" data-bs-target="#searchModal"><i

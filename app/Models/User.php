@@ -84,6 +84,7 @@ class User extends Authenticatable
     }
 
 
+    //ce code est le responsable de redirection l'ors je clicker sur boutton connecter dans login
     public function getRedirectRoute(): string
     {
         return match ($this->role) { 

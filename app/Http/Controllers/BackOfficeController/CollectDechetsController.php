@@ -25,6 +25,8 @@ class CollectDechetsController extends Controller
             // Get the currently authenticated user
             $user = Auth::user();
 
+        
+
             // Get the user ID
             $id_user = $user->id;
 

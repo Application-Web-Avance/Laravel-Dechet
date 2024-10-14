@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+
+    
+// Ce code vérifie la redirection lorsque l'utilisateur authentifié accède à la racine (/), en le redirigeant selon son rôle. S'il n'est pas connecté, il est renvoyé à la page de connexion.
     public function index()
     {
         // Check if the user is authenticated

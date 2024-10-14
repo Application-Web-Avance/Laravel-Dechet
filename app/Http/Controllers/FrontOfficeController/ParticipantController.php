@@ -15,22 +15,35 @@ class ParticipantController extends Controller
         $this->middleware('auth');
     }
 
-    // Function to get all "Collect Dechet" events
     public function getAllCollectDechet()
     {
-        // Check if the authenticated user's role is 'user'
         if (Auth::user()->role == 'user') {
-
-            // Retrieve all events related to waste collection, ordered by created_at in descending order and paginated by 6
-            $events = Collectedechets::orderBy('created_at', 'desc')->paginate(6);
-            // Return the view with the events data
-
-            return view('FrontOffice.gestionParticipant.index', ['events' => $events]);
+            $userId = Auth::id();
+    
+            // Retrieve all events related to waste collection, paginated by 6
+            $events = Collectedechets::with('participants')
+                ->orderBy('created_at', 'desc')
+                ->paginate(6);
+    
+            // Array to store participation status
+            $variablePourDisabledButton = [];
+    
+            foreach ($events as $event) {
+                $isParticipated = $event->participants()->where('user_id', $userId)->exists();
+                $variablePourDisabledButton[$event->id] = $isParticipated;
+            }
+    
+            return view('FrontOffice.gestionParticipant.index', [
+                'events' => $events,  // Pass events as is
+                'variablePourDisabledButton' => $variablePourDisabledButton,  // Pass participation status
+            ]);
         } else {
-            // If the user is not authorized, redirect to 'AccessDenied' route
             return redirect()->route('AccessDenied');
         }
     }
+    
+    
+    
 
 
     public function participer(Request $request, $eventId)

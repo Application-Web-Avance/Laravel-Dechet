@@ -167,8 +167,9 @@
         margin-top: 10px;
         /* Adjust spacing as needed */
     }
-        /* Pagination styling */
-        .pagination {
+
+    /* Pagination styling */
+    .pagination {
         margin: 1rem 0;
         display: flex;
         justify-content: center;
@@ -289,13 +290,21 @@
                                             Détails <i class="fa fa-arrow-right"></i>
                                         </a>
 
-                                        <form action="{{ route('evenementFront.participer', ['eventId' => $event->id]) }}"
-                                            method="POST" style="display: inline;">
-                                            @csrf <!-- CSRF token for security -->
-                                            <button type="submit" class="custom-btn btn-8" style="margin-left: 10px;">
-                                                <span>Participer</span>
+                                        @if ($variablePourDisabledButton[$event->id] || $event->nbparticipant === $event->Maxnbparticipant)
+                                            <button type="button" class="btn btn-secondary"
+                                                style="margin-left: 10px; cursor: not-allowed;" disabled>
+                                                <span class="fa fa-lock"></span> <!-- Lock icon to indicate disabled -->
                                             </button>
-                                        </form>
+                                        @else
+                                            <form
+                                                action="{{ route('evenementFront.participer', ['eventId' => $event->id]) }}"
+                                                method="POST" style="display: inline;">
+                                                @csrf
+                                                <button type="submit" class="custom-btn btn-8" style="margin-left: 10px;">
+                                                    <span>Participer</span>
+                                                </button>
+                                            </form>
+                                        @endif
                                     </div>
 
 

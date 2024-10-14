@@ -49,6 +49,13 @@
                             <span class="align-middle">Evenement</span>
                         </a>
                     </li>
+                    <!-- Users link with dynamic "active" class -->
+                    <li class="sidebar-item {{ request()->routeIs('usersA.index') ? 'active' : '' }}">
+                        <a class="sidebar-link" href="{{ route('usersA.index') }}">
+                            <i class="align-middle" data-feather="user"></i>
+                            <span class="align-middle">Utilisateurs à Vérifier</span>
+                        </a>
+                    </li>
 
                 </ul>
             </div>
@@ -225,15 +232,18 @@
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1"
                                         data-feather="user"></i> Profile</a>
-                                <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                        data-feather="pie-chart"></i> Analytics</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="index.html"><i class="align-middle me-1"
-                                        data-feather="settings"></i> Settings & Privacy</a>
-                                <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                        data-feather="help-circle"></i> Help Center</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Log out</a>
+
+                                <!-- Lien de déconnexion avec un formulaire -->
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    {{ __('Log out') }}
+                                </a>
+
+                                <!-- Formulaire de déconnexion -->
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
                             </div>
                         </li>
                     </ul>

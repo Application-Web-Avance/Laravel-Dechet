@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BackOfficeController\CollectDechetsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BackOfficeController\DashboardControllerB;
@@ -26,6 +27,11 @@ use Laravel\Jetstream\Http\Controllers\Inertia\UserProfileController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/verifierAuth/{cin}', function ($cin) {
+    // Transmettre le paramètre 'cin' à la vue
+    return view('verifierAuth', ['cin' => $cin]);
+})->name('verifierRoute');
+
 
 // Prefix pour le backOffice : 
 Route::prefix('back')->middleware('auth')->group(function () { // Ajoutez votre middleware ici
@@ -42,7 +48,17 @@ Route::prefix('back')->middleware('auth')->group(function () { // Ajoutez votre 
     Route::get('/evenement/{id}/participants', [CollectDechetsController::class, 'showParticipants'])->name('participants.show');
     Route::delete('/evenement/{eventId}/participants/{participantId}', [CollectDechetsController::class, 'destroyParticipant'])->name('participants.destroy');
     Route::get('/evenement/{id}', [CollectDechetsController::class, 'show'])->name('evenement.show');
+
+    //admin CRUD 
+    Route::get('/usersV', [AdminController::class, 'getUsersVerified'])->name('usersA.index');
+    Route::post('/users/{id}/accept', [AdminController::class, 'accept'])->name('users.accept');
+    Route::post('/users/{id}/reject', [AdminController::class, 'reject'])->name('users.reject');
+    
+    
+
 });
+
+
 
 // Prefix pour le frontOffice : 
 Route::prefix('front')->middleware('auth')->group(function () {
@@ -62,14 +78,14 @@ Route::get('/denied', function () {
 
 
 
-
+/********************User roots*************************/
 // Public Routes
 Route::get('/', [HomeController::class, 'index'])->name('home'); // Example home route
 
 // Authentication Routes
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 // Registration Routes
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
