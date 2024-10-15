@@ -83,13 +83,13 @@ Route::get('/denied', function () {
 Route::get('/', [HomeController::class, 'index'])->name('home'); // Example home route
 
 // Authentication Routes
-Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
-Route::post('/login', [AuthenticatedSessionController::class, 'store']);
-Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-
-// Registration Routes
-Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
-Route::post('/register', [RegisteredUserController::class, 'store']);
+Route::middleware('guest')->group(function () { // Middleware pour vérifier si l'utilisateur est un invité
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+    
+    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+    Route::post('/register', [RegisteredUserController::class, 'store']);
+});
 
 // Password Reset Routes
 Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
