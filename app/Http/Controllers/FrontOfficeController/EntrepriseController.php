@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\FrontOfficeController;
 
 use Illuminate\Http\Request;
+use App\Models\Centrederecyclage;
 use App\Models\Entrepriserecyclage;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,8 @@ class EntrepriseController extends Controller
     public function indexAll()
     {
         $entreprises = Entrepriserecyclage::all();
-        return view('FrontOffice.gestionEntreprise.index', compact('entreprises'));
+        $centres = Centrederecyclage::all(); 
+        return view('FrontOffice.gestionEntreprise.index', compact('entreprises', 'centres'));
     }
 
     public function store(Request $request)
@@ -22,7 +24,8 @@ class EntrepriseController extends Controller
             'specialite' => 'required',
             'numero_siret' => 'required',
             'adresse' => 'required',
-            'image_url' => 'nullable|image|max:2048',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'description' => 'required',
             //'testimonial' => 'nullable',
         ]);
 
@@ -37,22 +40,32 @@ class EntrepriseController extends Controller
         return redirect()->route('front.entreprise.index')->with('success', 'Entreprise ajoutée avec succès');
     }
 
-    public function update(Request $request, $id)
-    {
-        // Validate the request
-        $request->validate([
-            'nom' => 'required|string|max:255',
-            'specialite' => 'required|string|max:255',
-            'adresse' => 'required|string|max:255',
-            'testimonial' => 'nullable|string',
-        ]);
+    public function update(Request $request, $id){
+        
+    
+    
+    $entreprise = Entrepriserecyclage::findOrFail($id); // Use findOrFail to throw a 404 if not found
 
-        // Find the entreprise and update it
-        $entreprise = Entrepriserecyclage::findOrFail($id);
-        $entreprise->update($request->all());
-
-        return redirect()->route('front.entreprise.index')->with('success', 'Entreprise mise à jour avec succès');
+    
+    if ($request->hasFile('image_url')) {
+        $imagePath = $request->file('image_url')->store('images', 'public');
+        $entreprise->image_url = $imagePath;
     }
+
+    $entreprise->nom = $request->input('nom');
+    $entreprise->specialite = $request->input('specialite');
+    $entreprise->numero_siret = $request->input('numero_siret');
+    $entreprise->adresse = $request->input('adresse');
+    $entreprise->description = $request->input('description');
+
+    // Save the updated entreprise
+    $entreprise->save();
+
+    // Redirect with success message
+    return redirect()->route('front.entreprise.index')->with('success', 'Entreprise mise à jour avec succès');
+}
+
+
 
     public function destroy($id)
     {
@@ -64,11 +77,15 @@ class EntrepriseController extends Controller
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-        $entreprises = $user->entreprise; // Utilisez la relation définie dans le modèle User
-        
-        return view('FrontOffice.gestionEntreprise.index', compact('entreprises'));
+        $entreprises = $user->entreprise;
+        $centres = Centrederecyclage::all();
+
+        return view('FrontOffice.gestionEntreprise.index', compact('entreprises', 'centres'));
     }
+
+
+    
 }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('numero_siret');
             $table->string('specialite');
             $table->string('image_url');
+            $table->string('description');
             $table->foreignId('user_id') ->nullable()->constrained ('users')->onDelete (' restrict' );
             $table->timestamps();
         });

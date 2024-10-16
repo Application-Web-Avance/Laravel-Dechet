@@ -19,7 +19,7 @@ return new class extends Migration
             $table->time('duree_contract');
             $table->float('montant');
             $table->enum('typeContract', ['accepté','refusé','en cours']);
-            $table->foreignId('enteprise_id') ->nullable()->constrained ('entrepriserecyclage')->onDelete (' cascade' );
+            $table->foreignId('entreprise_id') ->nullable()->constrained ('entrepriserecyclage')->onDelete (' cascade' );
             $table->foreignId('centre_id') ->nullable()->constrained ('centrederecyclage')->onDelete (' cascade' );
             $table->timestamps();
         });

@@ -15,38 +15,41 @@
         </div>
 
         <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.2s">
-            @foreach ($entreprises as $entreprise)
-            <div class="testimonial-item bg-light rounded">
-                <div class="row g-0">
-                    <div class="col-4 col-lg-4 col-xl-3">
-                        <div class="h-100">
-                        <img src="{{ asset('storage/' . $entreprise->image_url) }}"  
-                            class="img-fluid h-100 rounded" 
-                            style="object-fit: cover;" 
-                            alt="{{ $entreprise->nom }}">
-                        </div>
-                    </div>
-                    <div class="col-8 col-lg-8 col-xl-9">
-                        <div class="d-flex flex-column my-auto text-start p-4">
-                            <h4 class="text-dark mb-0">{{ $entreprise->nom }}</h4>
-                            <p class="mb-3">{{ $entreprise->specialite }}</p>
-                            <p class="mb-0">SIRET: {{ $entreprise->numero_siret }}</p>
-                            <p class="mb-0">Address: {{ $entreprise->adresse }}</p>
-                            <p class="mb-0">{{ $entreprise->testimonial }}</p>
-
-                            <!-- Action Buttons -->
-                            <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#updateModal-{{ $entreprise->id }}">
-                                <i class="fa-regular fa-pen-to-square" title="Modifier"></i>
-                            </button>
-                            <button class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $entreprise->id }}">
-                                <i class="fa-regular fa-trash-can" title="Supprimer"></i>
-                            </button>
-                        </div>
-                    </div>
+    @foreach ($entreprises as $entreprise)
+    <div class="testimonial-item bg-light rounded">
+        <div class="row g-0">
+            <div class="col-4 col-lg-4 col-xl-3">
+                <div class="h-100">
+                <img src="{{ asset('storage/' . $entreprise->image_url) }}"  
+                    class="img-fluid h-100 rounded" 
+                    style="object-fit: cover;" 
+                    alt="{{ $entreprise->nom }}">
                 </div>
             </div>
-            @endforeach
+            <div class="col-8 col-lg-8 col-xl-9">
+                <div class="d-flex flex-column my-auto text-start p-4">
+                    <h4 class="text-dark mb-0">{{ $entreprise->nom }}</h4>
+                    <p class="mb-3">{{ $entreprise->specialite }}</p>
+                    <p class="mb-0">SIRET: {{ $entreprise->numero_siret }}</p>
+                    <p class="mb-0">Address: {{ $entreprise->adresse }}</p>
+                    <p class="mb-0">{{ $entreprise->testimonial }}</p>
+
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addContractModal-{{ $entreprise->id }}">
+                        Add Center & Contract
+                    </button>
+                    <!-- Action Buttons -->
+                    <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#updateModal-{{ $entreprise->id }}">
+                        <i class="fa-regular fa-pen-to-square" title="Modifier"></i>
+                    </button>
+                    <button class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $entreprise->id }}">
+                        <i class="fa-regular fa-trash-can" title="Supprimer"></i>
+                    </button>
+                </div>
+            </div>
         </div>
+    </div>
+    @endforeach
+</div>
     </div>
 </div>
 
@@ -94,3 +97,22 @@
 @endforeach
 
 @endsection
+
+
+<!-- Modal for adding a center to an entreprise -->
+@foreach ($entreprises as $entreprise)
+<div class="modal fade" id="addContractModal-{{ $entreprise->id }}" tabindex="-1" aria-labelledby="addContractModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContractModalLabel">Add Contract for {{ $entreprise->nom }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @include('FrontOffice.gestionContract.index', ['entreprise' => $entreprise, 'centres' => $centres])
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+

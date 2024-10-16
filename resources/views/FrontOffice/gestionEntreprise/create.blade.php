@@ -21,8 +21,8 @@
         <input type="file" class="form-control" id="image_url" name="image_url">
     </div>
     <div class="mb-3">
-        <label for="testimonial" class="form-label">Testimonial</label>
-        <textarea class="form-control" id="testimonial" name="testimonial" rows="3"></textarea>
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Ajouter</button>
 </form>

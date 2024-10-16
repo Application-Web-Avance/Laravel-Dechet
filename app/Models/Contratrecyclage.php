@@ -29,6 +29,9 @@ class Contratrecyclage extends Model
         'duree_contract',
         'montant',
         'typeContract',
+        'entreprise_id',
+        'centre_id'
+
     ];
 
     /**
@@ -38,10 +41,11 @@ class Contratrecyclage extends Model
      */
     public $timestamps = true;
 
-    public function entrprise(): BelongsTo
+    public function entreprise(): BelongsTo
     {
-        return $this->belongsTo(Entrepriserecyclage:: class);
+        return $this->belongsTo(Entrepriserecyclage::class, 'entreprise_id');
     }
+
 
     public function centre(): BelongsTo
     {

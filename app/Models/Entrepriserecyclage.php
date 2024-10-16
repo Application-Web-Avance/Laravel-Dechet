@@ -30,7 +30,7 @@ class Entrepriserecyclage extends Model
         'numero_siret',
         'specialite',
         'image_url', 
-        'testimonial',
+        'description',
         'user_id'
     ];
 
