@@ -28,7 +28,7 @@ class User extends Authenticatable
         'cin', // Assurez-vous que le CIN est inclus
         'date_naissance', // Assurez-vous que la date de naissance est incluse
         'role', // Ajoutez le champ role
-        'nomPrincipale' //c'est la presentation de nom d'entreprise ou nom de centre l'ors creation de compte de user 
+        'nomPrincipale' //c'est la presentation de nom d'entreprise ou nom de centre l'ors creation de compte de user
     ];
 
     /**
@@ -87,11 +87,15 @@ class User extends Authenticatable
     //ce code est le responsable de redirection l'ors je clicker sur boutton connecter dans login
     public function getRedirectRoute(): string
     {
-        return match ($this->role) { 
+        return match ($this->role) {
             'Responsable_Centre', 'Responsable_Entreprise','admin' => '/back/dashboard',
             'user' => '/front/home',
-            default => '/login', 
+            default => '/login',
         };
+    }
+    public function centresDeRecyclage()
+    {
+        return $this->hasMany(CentreDeRecyclage::class);
     }
 
 }

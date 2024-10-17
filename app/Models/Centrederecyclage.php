@@ -25,6 +25,7 @@ class Centrederecyclage extends Model
         'nom',
         'adresse',
         'horaires',
+        'id_utilisateur',
     ];
 
     /**
@@ -33,4 +34,9 @@ class Centrederecyclage extends Model
      * @var bool
      */
     public $timestamps = true;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_utilisateur');
+    }
 }

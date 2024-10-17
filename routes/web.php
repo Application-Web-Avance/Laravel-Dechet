@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BackOfficeController\CentreDeRecyclageController;
 use App\Http\Controllers\BackOfficeController\CollectDechetsController;
+use App\Http\Controllers\BackOfficeController\TypeDechetsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BackOfficeController\DashboardControllerB;
 use App\Http\Controllers\BackOfficeController\ExempleController;
@@ -33,7 +35,7 @@ Route::get('/verifierAuth/{cin}', function ($cin) {
 })->name('verifierRoute');
 
 
-// Prefix pour le backOffice : 
+// Prefix pour le backOffice :
 Route::prefix('back')->middleware('auth')->group(function () { // Ajoutez votre middleware ici
     Route::get('/dashboard', [DashboardControllerB::class, 'index'])->name('dashboard');
     Route::get('/exemple', [ExempleController::class, 'index']);
@@ -49,18 +51,24 @@ Route::prefix('back')->middleware('auth')->group(function () { // Ajoutez votre 
     Route::delete('/evenement/{eventId}/participants/{participantId}', [CollectDechetsController::class, 'destroyParticipant'])->name('participants.destroy');
     Route::get('/evenement/{id}', [CollectDechetsController::class, 'show'])->name('evenement.show');
 
-    //admin CRUD 
+    //admin CRUD
     Route::get('/usersV', [AdminController::class, 'getUsersVerified'])->name('usersA.index');
+
     Route::post('/users/{id}/accept', [AdminController::class, 'accept'])->name('users.accept');
     Route::post('/users/{id}/reject', [AdminController::class, 'reject'])->name('users.reject');
-    
-    
+
+    Route::get('/centres', [CentreDeRecyclageController::class, 'getUsersVerified'])->name('centres.index');
+    Route::get('/centres/type-dechet', [TypeDechetsController::class, 'getUsersVerified'])->name('gCentres.dechet');
+    Route::delete('/centres/{id}', [CentreDeRecyclageController::class, 'destroy'])->name('centres.destroy');
+    Route::get('/centres/create', [CentreDeRecyclageController::class, 'create'])->name('centres.create');
+    Route::post('/centres', [CentreDeRecyclageController::class, 'store'])->name('centres.store');
+
 
 });
 
 
 
-// Prefix pour le frontOffice : 
+// Prefix pour le frontOffice :
 Route::prefix('front')->middleware('auth')->group(function () {
     Route::get('/home', [DashboardControllerF::class, 'index'])->name('FrontHome');
 
@@ -86,7 +94,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home'); // Example home
 Route::middleware('guest')->group(function () { // Middleware pour vérifier si l'utilisateur est un invité
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
-    
+
     Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('/register', [RegisteredUserController::class, 'store']);
 });

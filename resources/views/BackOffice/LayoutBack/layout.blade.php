@@ -56,6 +56,12 @@
                             <span class="align-middle">Utilisateurs à Vérifier</span>
                         </a>
                     </li>
+                    <li class="sidebar-item {{ request()->routeIs('gCentre.index') ? 'active' : '' }}">
+                        <a class="sidebar-link" href="{{ route('centres.index') }}">
+                            <i class="align-middle" data-feather="user"></i>
+                            <span class="align-middle">Gestion Des Centres</span>
+                        </a>
+                    </li>
 
                 </ul>
             </div>
