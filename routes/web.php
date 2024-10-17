@@ -58,10 +58,11 @@ Route::prefix('back')->middleware('auth')->group(function () { // Ajoutez votre 
     Route::post('/users/{id}/reject', [AdminController::class, 'reject'])->name('users.reject');
 
     Route::get('/centres', [CentreDeRecyclageController::class, 'getUsersVerified'])->name('centres.index');
-    Route::get('/centres/type-dechet', [TypeDechetsController::class, 'getUsersVerified'])->name('gCentres.dechet');
+    Route::get('/centres/type-dechet', [TypeDechetsController::class, 'getUsersVerified'])->name('type-dechets');
     Route::delete('/centres/{id}', [CentreDeRecyclageController::class, 'destroy'])->name('centres.destroy');
     Route::get('/centres/create', [CentreDeRecyclageController::class, 'create'])->name('centres.create');
     Route::post('/centres', [CentreDeRecyclageController::class, 'store'])->name('centres.store');
+    Route::post('/back/centres/type-dechet', [TypeDechetsController::class, 'store'])->name('type-dechets.store');
 
 
 });

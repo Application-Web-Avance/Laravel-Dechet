@@ -14,6 +14,7 @@
                     <th>Nom</th>
                     <th>Adresse</th>
                     <th>Horaire</th>
+                    <th>Type Dechet</th>
                     @if($isAdmin)
                         <th>Identifiant du Responsable</th>
                     @endif
@@ -26,6 +27,7 @@
                         <td>{{ $centre->nom }}</td>
                         <td>{{ $centre->adresse }}</td>
                         <td>{{ $centre->horaires }}</td>
+                        <td>{{$centre->typedechet->type}}</td>
                         @if($isAdmin)
                             <td>{{$centre->id_utilisateur}}</td>
                         @endif

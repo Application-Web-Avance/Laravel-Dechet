@@ -38,4 +38,8 @@ class Typedechets extends Model
     {
         return $this->hasMany(Collectedechets::class); // Make sure the model name is correct here
     }
+    public function centresDeRecyclage()
+    {
+        return $this->hasMany(Centrederecyclage::class, 'type_dechet_id');
+    }
 }

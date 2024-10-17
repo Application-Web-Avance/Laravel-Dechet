@@ -26,6 +26,7 @@ class Centrederecyclage extends Model
         'adresse',
         'horaires',
         'id_utilisateur',
+        'type_dechet_id'
     ];
 
     /**
@@ -38,5 +39,9 @@ class Centrederecyclage extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'id_utilisateur');
+    }
+    public function typeDechet()
+    {
+        return $this->belongsTo(Typedechets::class, 'type_dechet_id');
     }
 }

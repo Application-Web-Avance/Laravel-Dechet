@@ -57,8 +57,8 @@ class CentreDeRecyclageController extends Controller
             'nom' => 'required|string|max:255',
             'adresse' => 'required|string',
             'horaires' => 'required|string',
-            'types_dechets' => 'array', // Types of déchets
-            'types_dechets.*' => 'exists:type_dechets,id', // Ensure each type exists
+            'types_dechets' => 'array',
+            'type_dechet_id' => 'exists:typedechets,id',
         ]);
 
         // Add the authenticated user's ID to the data
@@ -66,7 +66,7 @@ class CentreDeRecyclageController extends Controller
 
         // Create the recycling center
         $centre = CentreDeRecyclage::create($data);
-//        $centre->typeDeDechets()->sync($request->types_dechets); // Sync the types of waste
+//        $centre->typeDechet()->sync($request->types_dechets);
 
         return redirect()->route('centres.index')->with('success', 'Centre created successfully');
     }
@@ -142,11 +142,13 @@ class CentreDeRecyclageController extends Controller
 
         if (Auth::user()->role == 'Responsable_Centre' || Auth::user()->role == 'Responsable_Entreprise') {
             $isAdmin = false;
-            $centres = CentreDeRecyclage::where('id_utilisateur', auth()->id())->get();
+            $centres = CentreDeRecyclage::where('id_utilisateur', auth()->id())
+                ->with('typeDechet')
+                ->get();
             return view('BackOffice/GestionCentre/index',compact('centres','isAdmin'));
         }
         if(Auth::user()->role == 'admin'){
-            $centres = CentreDeRecyclage::all();
+            $centres = CentreDeRecyclage::with('typeDechet')->get();
             $isAdmin = true;
             return view('BackOffice/GestionCentre/index',compact('centres','isAdmin'));
         }else {

@@ -27,27 +27,17 @@
 
 
             <div class="mb-3">
-                <label for="types_dechets" class="form-label">Types de Déchets:</label>
-                <select name="types_dechets[]" id="types_dechets" class="form-select" required>
+                <label for="type_dechet_id" class="form-label">Types de Déchets:</label>
+                <select name="type_dechet_id" id="types_dechets" class="form-select" required>
                     @foreach ($typesDechets as $typeDechet)
-                        <option value="{{ $typeDechet->id }}">{{ $typeDechet->name }}</option>
+                        <option value="{{ $typeDechet->id }}">{{ $typeDechet->type }}</option>
                     @endforeach
                 </select>
-
-                <button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#newTypeDechetContainer" aria-expanded="false" aria-controls="newTypeDechetContainer">
+                <a class="link " href="{{route('type-dechets')}}">
                     Ajouter Nouveau Type de Déchet
-                </button>
-
-                <div class="collapse"  id="newTypeDechetContainer">
-                    <hr/>
-                    <h3 class="offset-4">Ajouter un nouveau type de déchet</h3>
-                    <div class="m-5">
-                        <input type="text" id="new_type_dechet" class="form-control mx-5" placeholder="Ajouter nouveau type de déchet">
-                        <button type="button" class="btn btn-success my-2 offset-5" id="add_type_dechet">Ajouter</button>
-                    </div>
-                    <hr/>
-                </div>
+                </a>
             </div>
+
 
             <button type="submit" class="btn btn-primary">Ajouter</button>
         </form>

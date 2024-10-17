@@ -58,11 +58,10 @@
                     </li>
                     <li class="sidebar-item {{ request()->routeIs('gCentre.index') ? 'active' : '' }}">
                         <a class="sidebar-link" href="{{ route('centres.index') }}">
-                            <i class="align-middle" data-feather="user"></i>
+                            <i class="align-middle" data-feather="refresh-cw"></i>
                             <span class="align-middle">Gestion Des Centres</span>
                         </a>
                     </li>
-
                 </ul>
             </div>
         </nav>
