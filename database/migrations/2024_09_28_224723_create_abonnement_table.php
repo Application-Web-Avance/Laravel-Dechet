@@ -8,26 +8,22 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('abonnement', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('plan_abonnement_id')->constrained('plan_abonnement')->onDelete('cascade');
             $table->date('date_debut');
-            $table->date('date_fin');
-            $table->string('etat');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('abonnement');
     }
