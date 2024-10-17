@@ -173,7 +173,7 @@
                         </div>
                     </div>
                 </div>
-            
+
                 <!-- Colonne pour le graphique des types de déchets -->
                 <div class="col-sm-6 col-md-4 "> <!-- Ajuster la largeur de la colonne ici -->
                     <div class="card">
@@ -185,7 +185,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <script>
                 var ctx = document.getElementById('typesDechetsChart').getContext('2d');
                 var typesDechetsChart = new Chart(ctx, {
@@ -209,7 +209,7 @@
                     }
                 });
             </script>
-            
+
             <script>
                 // Initialisation de Flatpickr
                 flatpickr("#datetimepicker-dashboard", {
@@ -217,7 +217,71 @@
                     dateFormat: "Y-m-d", // Format de la date
                 });
             </script>
-            
         @endif
+
+        @if (Auth::user()->role == 'Responsable_Centre' || Auth::user()->role == 'Responsable_Entreprise')
+            <div class="row">
+                <!-- Card 1 -->
+                <div class="col-sm-6 col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">Participant</h5>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="stat text-primary">
+                                        <i class="align-middle" data-feather="users"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3">{{ $totalParticipants }}</h1>
+                            <div class="mb-0">
+                                <span class="text-muted">Total des Participant de @if (Auth::user()->role == 'Responsable_Centre') centre @else entreprise @endif</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Colonne pour le graphique des types de déchets -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Types de déchets les plus utilisés dans les événements :</h5>
+                            <canvas id="typesDechetsChart" style="max-height: 700px; max-width: 100%;"></canvas>
+                            <!-- 100% pour remplir la carte -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                var ctx = document.getElementById('typesDechetsChart').getContext('2d');
+                var typesDechetsChart = new Chart(ctx, {
+                    type: 'bar', // Type de graphique (bar, line, pie, etc.)
+                    data: {
+                        labels: {!! json_encode($labels) !!}, // Noms des types de déchets
+                        datasets: [{
+                            label: 'Occurrences',
+                            data: {!! json_encode($data) !!}, // Nombre d'occurrences
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Couleur de remplissage
+                            borderColor: 'rgba(75, 192, 192, 1)', // Couleur de la bordure
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true // Commencer l'axe Y à 0
+                            }
+                        }
+                    }
+                });
+            </script>
+        @endif
+        
+
     </div>
 @endsection
