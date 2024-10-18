@@ -70,7 +70,7 @@ public function store(Request $request)
      */
     public function edit(Abonnement $abonnement)
 {
-    $plans = PlanAbonnement::all(); // Fetch all PlanAbonnement records
+    $plans = PlanAbonnement::all();
     return view('abonnement.edit', compact('plans', 'abonnement'));
 }
 
@@ -110,10 +110,7 @@ public function store(Request $request)
      */
     public function destroy(Abonnement $abonnement)
     {
-
-        // Delete room
         $abonnement->delete();
-
         return redirect()->route('abonnement.index')->with('success', 'abonnement deleted successfully.');
     }
 }

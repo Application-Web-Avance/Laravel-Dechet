@@ -5,6 +5,8 @@ use App\Http\Controllers\BackOfficeController\DashboardControllerB;
 use App\Http\Controllers\BackOfficeController\ExempleController;
 use App\Http\Controllers\FrontOfficeController\HomeController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use App\Http\Controllers\AbonnementController;
+use App\Http\Controllers\PlanAbonnementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +30,8 @@ Route::prefix('back')->group(function () {
 
 Route::get('/dashboard', [DashboardControllerB::class, 'index']);
 Route::get('/exemple', [ExempleController::class, 'index']);
-
+Route::resource('/abonnement', AbonnementController::class);
+Route::resource('/planabonnement', PlanAbonnementController::class);
 });
 
 //Prefix pour le frontOffice :
@@ -37,5 +40,4 @@ Route::prefix('front')->group(function () {
     // Vous pouvez ajouter d'autres routes liées au front-office ici
 });
 
-Route::resource('abonnement', AbonnementController::class);
 

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PlanAbonnement extends Model
 {
     use HasFactory;
-    protected $fillable = ['type', 'price', 'description'];
+    protected $fillable = ['type', 'price', 'description','image'];
 
     // Specify the table name
     protected $table = 'plan_abonnement';

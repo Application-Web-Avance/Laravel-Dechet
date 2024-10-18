@@ -309,77 +309,61 @@
             </nav>
 
             <main class="content">
-
-
-                <div class="row">
-                    <div class="col-12 col-lg-12 col-xxl-9 d-flex">
-                        <div class="card flex-fill">
-                            <div class="card-header">
-
-                                <a href="{{ url('/back/abonnement/create') }}" type="button"
-                                    class="btn btn-primary btn-md">
-                                    New
-                                </a>
-
-                            </div>
-                            <table class="table table-hover my-0">
-                                <thead>
-                                    <tr>
-
-                                        <th class="d-none d-xl-table-cell">Start Date</th>
-                                        <th>Abonnement</th>
-                                        <th>Image</th>
-                                        <th class="d-none d-md-table-cell">actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($abonnement as $a)
-                                        <tr>
-
-                                            <td class="d-none d-xl-table-cell">{{ $a->date_debut }}</td>
-                                            <td class="d-none d-xl-table-cell">{{ $a->planAbonnement->type }}</td>
-                                            <td>
-                                                @if ($a->image)
-                                                    <img src="{{ asset('storage/' . $a->image) }}"
-                                                        style="width: 50px; height: 50px;">
-                                                @else
-                                                    <img src="{{ asset('path/to/default/image.jpg') }}"
-                                                        alt="Default Image" style="width: 50px; height: 50px;">
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="{{ url('/back/abonnement/' . $a->id . '/edit') }}" type="submit" class="btn btn-link text-seccess"
-                                                    style="text-decoration:none;" title="edit">
-                                                    update
-                                                </a>
-                                                <!-- Delete form -->
-                                                <form action="{{ url('/back/abonnement/' . $a->id) }}" method="POST"
-                                                    style="display:inline;"
-                                                    onsubmit="return confirm('Are you sure you want to delete this abonnement?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-link text-danger"
-                                                        style="text-decoration:none;" title="Remove">
-                                                        Delete
-                                                    </button>
-                                                </form>
-                                            </td>
-
-
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Create Plan Abonnement</h5>
                     </div>
+                    <div class="card-body">
 
+                        <!-- Form starts here -->
+                        <form action="{{ route('planabonnement.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf <!-- Add CSRF token for form security -->
+
+                            <!-- Type as Select Options -->
+                            <div class="mb-3">
+                                <label for="type" class="form-label">Type</label>
+                                <select class="form-control" name="type" id="type" required>
+                                    <option value="" disabled selected>Select type</option>
+                                    <option value="mensuel">Mensuel</option>
+                                    <option value="trimestriel">Trimestriel</option>
+                                    <option value="semestriel">Semestriel</option>
+                                    <option value="annuel">Annuel</option>
+                                </select>
+                            </div>
+
+                            <!-- Price -->
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Price</label>
+                                <input type="number" class="form-control" name="price" id="price" required>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <input type="text" class="form-control" name="description" id="description" required>
+                            </div>
+
+                            <!-- Image Upload -->
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Upload Image</label>
+                                <input type="file" class="form-control" name="image" accept="image/*">
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary" style="width: 100px;">Submit</button>
+                            </div>
+                        </form>
+                        <!-- End of form -->
+
+                    </div>
                 </div>
+            </main>
+
+
+
 
         </div>
-        </main>
-
-
-    </div>
     </div>
 
     <script src="js/app.js"></script>
