@@ -8,29 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Abonnement extends Model
 {
     use HasFactory;
+    protected $fillable = ['date_debut', 'plan_abonnement_id', 'image'];
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
+    // Specify the table name
     protected $table = 'abonnement';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'date_debut',
-        'date_fin',
-        'etat',
-    ];
-
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = true;
+    public function planAbonnement()
+    {
+        return $this->belongsTo(PlanAbonnement::class);
+    }
 }

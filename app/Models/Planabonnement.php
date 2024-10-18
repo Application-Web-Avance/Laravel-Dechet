@@ -5,32 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Planabonnement extends Model
+class PlanAbonnement extends Model
 {
     use HasFactory;
+    protected $fillable = ['type', 'price', 'description','image'];
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'planabonnement';
+    // Specify the table name
+    protected $table = 'plan_abonnement';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'type_abonnement',
-        'prix',
-        'description',
-    ];
-
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = true;
+    public function abonnement()
+    {
+        return $this->hasMany(Abonnement::class);
+    }
 }
