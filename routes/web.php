@@ -4,9 +4,11 @@ use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Controllers\FrontOfficeController\HomeController;
 use App\Http\Controllers\BackOfficeController\ExempleController;
+use App\Http\Controllers\BackOfficeController\ContractsControllerB;
 use App\Http\Controllers\BackOfficeController\DashboardControllerB;
-use App\Http\Controllers\FrontOfficeController\ContractsController;
 use App\Http\Controllers\FrontOfficeController\EntrepriseController;
+use App\Http\Controllers\FrontOfficeController\ContractsController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +31,8 @@ use App\Http\Controllers\FrontOfficeController\EntrepriseController;
 Route::prefix('back')->group(function () {
 Route::get('/dashboard', [DashboardControllerB::class, 'index']);
 Route::get('/exemple', [ExempleController::class, 'index']);
+Route::get('/contracts', [ContractsControllerB::class, 'index']);
+Route::put('/contracts/{id}', [ContractsControllerB::class, 'updateStatus']);
 
 });
 

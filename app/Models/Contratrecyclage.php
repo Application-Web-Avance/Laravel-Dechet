@@ -30,9 +30,10 @@ class Contratrecyclage extends Model
         'montant',
         'typeContract',
         'entreprise_id',
-        'centre_id'
-
+        'centre_id',
+        'pdf_proof', // Add this field
     ];
+    
 
     /**
      * Indicates if the model should be timestamped.
@@ -51,4 +52,12 @@ class Contratrecyclage extends Model
     {
         return $this->belongsTo(Centrederecyclage:: class);
     }
+
+    public function getDateFinAttribute()
+    {
+        $startDate = \Carbon\Carbon::parse($this->date_signature);
+        return $startDate->addMonths($this->duree_contract)->format('d-m-Y');
+    }
+
+
 }

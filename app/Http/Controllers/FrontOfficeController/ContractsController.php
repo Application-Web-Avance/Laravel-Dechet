@@ -18,16 +18,19 @@ class ContractsController extends Controller
             'date_signature' => 'required|date',
             'duree_contract' => 'required|numeric',
             'montant' => 'required|numeric',
-            //'typeContract' => 'required|string|max:255',
+            'pdf_proof' => 'required|mimes:pdf|max:2048',
         ]);
 
         $validatedData['typeContract']='en cours';
         $validatedData['entreprise_id']=$id;
         $validatedData['centre_id']=$id2;
-        // Create new contract
+
+        if ($request->hasFile('pdf_proof')) {
+            $pdfPath = $request->file('pdf_proof')->store('contracts_proofs', 'public'); // Save PDF in storage/app/public/contracts_proofs
+            $validatedData['pdf_proof'] = $pdfPath;
+        }
         Contratrecyclage::create($validatedData);
 
-        // Redirect or return with success message
         return redirect()->back()->with('success', 'Contract created successfully.');
     }
 
