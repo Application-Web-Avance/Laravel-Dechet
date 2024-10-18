@@ -31,11 +31,16 @@
                         @if($isAdmin)
                             <td>{{$centre->id_utilisateur}}</td>
                         @endif
-                        <td><form action="{{ route('centres.destroy', $centre->id) }}" method="POST" style="display:inline-block;">
+                        <td>
+                            <form action="{{ route('centres.edit', $centre->id) }}" style="display:inline-block;">
+                                <button type="submit" class="btn btn-info btn-sm" onclick="">Mettre a jour</button>
+                            </form>
+                            <form action="{{ route('centres.destroy', $centre->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce centre ?');">Supprimer</button>
                             </form>
+
                         </td>
                     </tr>
                 @endforeach

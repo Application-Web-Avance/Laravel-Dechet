@@ -19,20 +19,20 @@ class ParticipantController extends Controller
     {
         if (Auth::user()->role == 'user') {
             $userId = Auth::id();
-    
+
             // Retrieve all events related to waste collection, paginated by 6
             $events = Collectedechets::with('participants')
                 ->orderBy('created_at', 'desc')
                 ->paginate(6);
-    
+
             // Array to store participation status
             $variablePourDisabledButton = [];
-    
+
             foreach ($events as $event) {
                 $isParticipated = $event->participants()->where('user_id', $userId)->exists();
                 $variablePourDisabledButton[$event->id] = $isParticipated;
             }
-    
+
             return view('FrontOffice.gestionParticipant.index', [
                 'events' => $events,  // Pass events as is
                 'variablePourDisabledButton' => $variablePourDisabledButton,  // Pass participation status
@@ -41,9 +41,9 @@ class ParticipantController extends Controller
             return redirect()->route('AccessDenied');
         }
     }
-    
-    
-    
+
+
+
 
 
     public function participer(Request $request, $eventId)

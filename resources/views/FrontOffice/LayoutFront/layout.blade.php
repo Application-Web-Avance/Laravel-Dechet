@@ -101,7 +101,7 @@
                     <div class="navbar-nav mx-0 mx-lg-auto">
                         <a href="{{ route('FrontHome') }}" class="nav-item nav-link active">Home</a>
                         <a href="about.html" class="nav-item nav-link">About</a>
-                        <a href="service.html" class="nav-item nav-link">Services</a>
+                        <a href="{{route('centres.front')}}" class="nav-item nav-link">Centres</a>
                         <a href="blog.html" class="nav-item nav-link">Blog</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link" data-bs-toggle="dropdown">

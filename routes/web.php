@@ -63,6 +63,9 @@ Route::prefix('back')->middleware('auth')->group(function () { // Ajoutez votre 
     Route::get('/centres/create', [CentreDeRecyclageController::class, 'create'])->name('centres.create');
     Route::post('/centres', [CentreDeRecyclageController::class, 'store'])->name('centres.store');
     Route::post('/back/centres/type-dechet', [TypeDechetsController::class, 'store'])->name('type-dechets.store');
+    Route::get('/centres/{id}', [CentreDeRecyclageController::class, 'edit'])->name('centres.edit');
+    Route::put('/centres/{id}', [CentreDeRecyclageController::class, 'update'])->name('centres.update');
+
 
 
 });
@@ -79,6 +82,9 @@ Route::prefix('front')->middleware('auth')->group(function () {
     Route::get('/participant', [ParticipantController::class, 'getEventsById'])->name('evenementFront.myEvents');
     Route::delete('/participant/{id}', [ParticipantController::class, 'supprimerParti'])->name('evenementFront.supprimer');
 });
+
+    Route::get('/centres', [CentreDeRecyclageController::class, 'front'])->name('centres.front');
+
 
 // Access denied page :
 Route::get('/denied', function () {

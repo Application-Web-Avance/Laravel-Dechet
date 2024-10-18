@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\BackOfficeController;
 
 use App\Http\Controllers\Controller;
+use App\Mail\CentreCreateMail;
+use App\Mail\CentreUpdateMail;
 use App\Models\Centrederecyclage;
 use App\Models\Collectedechets;
 use App\Models\Typedechets;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CentreDeRecyclageController extends Controller
 {
@@ -31,6 +34,11 @@ class CentreDeRecyclageController extends Controller
         }else {
             return redirect()->route('AccessDenied');
         }
+    }
+    public function front()
+    {
+            $centres = CentreDeRecyclage::all();
+            return view('FrontOffice/GestionCentres/index',compact('centres'));
     }
 
     /**
@@ -61,12 +69,10 @@ class CentreDeRecyclageController extends Controller
             'type_dechet_id' => 'exists:typedechets,id',
         ]);
 
-        // Add the authenticated user's ID to the data
         $data['id_utilisateur'] = auth()->id();
 
-        // Create the recycling center
         $centre = CentreDeRecyclage::create($data);
-//        $centre->typeDechet()->sync($request->types_dechets);
+        Mail::to('moatazfoudhaily@gmail.com')->send(new CentreCreateMail($centre));
 
         return redirect()->route('centres.index')->with('success', 'Centre created successfully');
     }
@@ -91,8 +97,12 @@ class CentreDeRecyclageController extends Controller
      */
     public function edit($id)
     {
-        //
+        $centre = CentreDeRecyclage::findOrFail($id);
+        $typesDechets = Typedechets::all();
+
+        return view('BackOffice.GestionCentre.edit', compact('centre', 'typesDechets'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -103,7 +113,17 @@ class CentreDeRecyclageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->validate([
+            'nom' => 'required|string|max:255',
+            'adresse' => 'required|string',
+            'horaires' => 'required|string',
+            'type_dechet_id' => 'exists:typedechets,id',
+        ]);
+
+        $centre = CentreDeRecyclage::findOrFail($id);
+        $centre->update($data);
+        Mail::to('moatazfoudhaily@gmail.com')->send(new CentreUpdateMail($centre));
+        return redirect()->route('centres.index')->with('success', 'Centre mis à jour avec succès');
     }
 
     /**
