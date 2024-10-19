@@ -1,7 +1,7 @@
-        
+
 @extends('FrontOffice.LayoutFront.layout')
- @section('content')       
-        
+ @section('content')
+
 
 <!-- Choose a container from these -->
 
@@ -15,7 +15,7 @@
                                 <div class="text-sm-center text-md-start">
                                     <h4 class="text-white text-uppercase fw-bold mb-4">Welcome To LifeSure</h4>
                                     <h1 class="display-1 text-white mb-4">Life Insurance Makes You Happy</h1>
-                                    <p class="mb-5 fs-5">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy... 
+                                    <p class="mb-5 fs-5">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy...
                                     </p>
                                     <div class="d-flex justify-content-center justify-content-md-start flex-shrink-0 mb-4">
                                         <a class="btn btn-light rounded-pill py-3 px-4 px-md-5 me-2" href="#"><i class="fas fa-play-circle me-2"></i> Watch Video</a>
@@ -45,7 +45,7 @@
                                 <div class="text-sm-center text-md-end">
                                     <h4 class="text-white text-uppercase fw-bold mb-4">Welcome To LifeSure</h4>
                                     <h1 class="display-1 text-white mb-4">Life Insurance Makes You Happy</h1>
-                                    <p class="mb-5 fs-5">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy... 
+                                    <p class="mb-5 fs-5">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy...
                                     </p>
                                     <div class="d-flex justify-content-center justify-content-md-end flex-shrink-0 mb-4">
                                         <a class="btn btn-light rounded-pill py-3 px-4 px-md-5 me-2" href="#"><i class="fas fa-play-circle me-2"></i> Watch Video</a>

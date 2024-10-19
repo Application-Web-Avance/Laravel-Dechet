@@ -15,6 +15,13 @@ class PlanAbonnementController extends Controller
         return view('planAbonnement.planAbonnement', compact('planAbonnement'));
     }
 
+    // Display PlanAbonnement on the front office
+    public function showPlansFront()
+    {
+        $plans = PlanAbonnement::all();
+        return view('planAbonnement.abonnementFO', compact('plans'));
+    }
+
     // Show the form for creating a new resource
     public function create()
     {
@@ -26,7 +33,7 @@ class PlanAbonnementController extends Controller
     {
         $data = $request->validate([
             'type' => 'required|string|max:255',
-            'price' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:1',
             'description' => 'required|string|max:255',
             'image' => 'nullable|image',
         ]);
@@ -56,12 +63,12 @@ class PlanAbonnementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id,PlanAbonnement $planAbonnement)
     {
         // Validate request data
         $data = $request->validate([
             'type' => 'required|string|max:255',
-            'price' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:1',
             'description' => 'required|string|max:255',
             'image' => 'nullable|image', // Optional image
         ]);
@@ -90,12 +97,15 @@ class PlanAbonnementController extends Controller
  * @param  int $id
  * @return \Illuminate\Http\Response
  */
-    public function destroy($id)
+    public function destroy($id,PlanAbonnement $planAbonnement)
     {
 
-        $planAbonnement = PlanAbonnement::where('id', $id);
-        $planAbonnement->delete();
-
+        $plan = PlanAbonnement::where('id', $id);
+        $plan->delete();
+        // Delete associated image if it exists
+        if ($planAbonnement->image) {
+            Storage::disk('public')->delete($planAbonnement->image);
+        }
         return redirect()->route('planabonnement.index')
                          ->with('success', 'Plan Abonnement deleted successfully.');
     }
