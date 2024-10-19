@@ -37,7 +37,8 @@ Route::resource('/planabonnement', PlanAbonnementController::class);
 //Prefix pour le frontOffice :
 Route::prefix('front')->group(function () {
     Route::get('/home', [HomeController::class, 'index']);
-    // Vous pouvez ajouter d'autres routes liées au front-office ici
+    Route::get('/plans', [PlanAbonnementController::class, 'showPlansFront']);
+
 });
 
 
