@@ -322,8 +322,7 @@
                             <!-- Select Plan Abonnement -->
                             <div class="mb-3">
                                 <label for="plan_abonnement_id" class="form-label">Select Plan Abonnement</label>
-                                <select class="form-select" name="plan_abonnement_id" id="plan_abonnement_id"
-                                    required>
+                                <select class="form-select" name="plan_abonnement_id" id="plan_abonnement_id" required>
                                     <option selected disabled>Select a plan</option>
                                     @foreach ($plans as $plan)
                                         <option value="{{ $plan->id }}">{{ $plan->type }}</option>
@@ -331,11 +330,21 @@
                                 </select>
                             </div>
 
+                            <!-- Select User -->
+                            <div class="mb-3">
+                                <label for="user_id" class="form-label">Select User</label>
+                                <select class="form-select" name="user_id" id="user_id" required>
+                                    <option selected disabled>Select a user</option>
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <!-- Date Input -->
                             <div class="mb-3">
                                 <label for="date_debut" class="form-label">Start Date</label>
-                                <input type="date" class="form-control" name="date_debut" id="date_debut"
-                                    required>
+                                <input type="date" class="form-control" name="date_debut" id="date_debut" required>
                             </div>
 
                             <!-- Image Upload -->
@@ -354,7 +363,6 @@
                     </div>
                 </div>
             </main>
-
 
 
         </div>
