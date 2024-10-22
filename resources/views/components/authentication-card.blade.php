@@ -11,7 +11,7 @@
 <style>
     .custom-bg {
         /* Couleur de fond par défaut pendant le chargement */
-        background-image: url('{{ asset('storage/images/collectes/backgroundAUTH.jpg') }}');
+        background-image: url('{{ asset('storage/images/collectes/backgroundAUTH.jpeg') }}');
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;

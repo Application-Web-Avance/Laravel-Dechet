@@ -43,7 +43,7 @@
                                                 <img src="{{ $collect->image ? asset('storage/' . $collect->image) : $defaultImagePath }}" alt="Image de l'événement" style="width: 50px; height: 50px; object-fit: cover; border-radius: 20%;">
 
                                                 @else
-                                                    <img src="{{ asset('storage/images/collectes/Collectdechet.jpg') }}"
+                                                    <img src="{{ asset('storage/images/collectes/Collectdechet.jpeg') }}"
                                                         alt="Image par défaut"
                                                         style="width: 50px; height: 50px; object-fit: cover; border-radius: 20%;">
                                                 @endif
@@ -70,7 +70,7 @@
                                                         <i data-feather="delete"></i>
                                                     </button>
                                                 </form>
-                                                
+
                                                 <button type="button" class="btn btn-info mx-1 action-btn"
                                                     onclick="window.location.href='{{ route('participants.show', $collect->id) }}'">
                                                     <i data-feather="users"></i>
@@ -161,5 +161,5 @@
             });
         }
     </script>
-    
+
 @endsection

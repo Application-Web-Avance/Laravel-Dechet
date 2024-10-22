@@ -231,7 +231,7 @@
                                     @php
                                         $imagePath = $event->image
                                             ? asset('storage/' . $event->image)
-                                            : asset('storage/images/collectes/Collectdechet.jpg');
+                                            : asset('storage/images/collectes/Collectdechet.jpeg');
                                     @endphp
                                     <img src="{{ $imagePath }}" class="img-fluid rounded-top w-100"
                                         alt="{{ $event->nomEvent }}" style="height: 250px; object-fit: cover;">
@@ -320,7 +320,7 @@
                         </ul>
                     </nav>
                 </div>
-                
+
             @else
                 <p class="text-center">Vous n'avez aucun événement !</p>
             @endif
@@ -351,7 +351,7 @@
                     <div class="modal-body text-center">
                         <img src="" id="eventImage" class="img-fluid rounded-circle mb-3" alt="Image de l'événement"
                             style="width: 150px; height: 150px;"
-                            onerror="this.onerror=null; this.src='{{ asset('storage/images/collectes/Collectdechet.jpg') }}'">
+                            onerror="this.onerror=null; this.src='{{ asset('storage/images/collectes/Collectdechet.jpeg') }}'">
                         <!-- Default image -->
 
                         <!-- Horizontal line under the image -->
@@ -442,7 +442,7 @@
                     </div>
                     <div class="modal-body">
                         <img src="" id="modalImage" class="img-fluid" alt="Aperçu de l'image"
-                            onerror="this.onerror=null; this.src='{{ asset('storage/images/collectes/Collectdechet.jpg') }}'">
+                            onerror="this.onerror=null; this.src='{{ asset('storage/images/collectes/Collectdechet.jpeg') }}'">
                     </div>
                 </div>
             </div>
@@ -470,7 +470,7 @@
                     console.error('Error loading image for src:', modalImage
                         .src); // Affiche le message d'erreur avec la source de l'image
                     modalImage.src =
-                        '{{ asset('storage/images/collectes/Collectdechet.jpg') }}'; // Charger une image par défaut en cas d'erreur
+                        '{{ asset('storage/images/collectes/Collectdechet.jpeg') }}'; // Charger une image par défaut en cas d'erreur
                 };
             });
         </script>

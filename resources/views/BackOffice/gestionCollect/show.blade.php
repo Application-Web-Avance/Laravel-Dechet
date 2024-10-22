@@ -18,7 +18,7 @@
                                             <img src="{{ asset('storage/' . $event->image) }}"
                                                  alt="Image de l'événement" style="width: 150px; height: 150px; object-fit: cover; border-radius: 20%;">
                                         @else
-                                            <img src="{{ asset('storage/images/collectes/Collectdechet.jpg') }}"
+                                            <img src="{{ asset('storage/images/collectes/Collectdechet.jpeg') }}"
                                                  alt="Image par défaut" style="width: 150px; height: 150px; object-fit: cover; border-radius: 20%;">
                                         @endif
                                     </div>
