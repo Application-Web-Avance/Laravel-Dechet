@@ -211,7 +211,8 @@
 </style>
 @extends('FrontOffice.LayoutFront.layout')
 @section('content')
-    <div class="container-fluid blog py-2">
+
+        <div class="container-fluid blog py-2">
 
         <div class="container py-5">
             @if ($events->isNotEmpty())
@@ -391,6 +392,7 @@
 
                     <!-- Horizontal line under the image -->
                     <hr style="border-top: 2px solid #007bff; width: 80%; margin: 0 auto 1rem;">
+
 
                     <!-- Event Details -->
                     <p class="lead"><strong>
