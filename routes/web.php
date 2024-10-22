@@ -81,6 +81,9 @@ Route::prefix('front')->middleware('auth')->group(function () {
     Route::post('/evenement/{eventId}/participer', [ParticipantController::class, 'participer'])->name('evenementFront.participer');
     Route::get('/participant', [ParticipantController::class, 'getEventsById'])->name('evenementFront.myEvents');
     Route::delete('/participant/{id}', [ParticipantController::class, 'supprimerParti'])->name('evenementFront.supprimer');
+    Route::get('/evenement/proches', [ParticipantController::class, 'getCollectDechetProche'])->name('evenement.proches');
+
+
 });
 
     Route::get('/centres', [CentreDeRecyclageController::class, 'front'])->name('centres.front');

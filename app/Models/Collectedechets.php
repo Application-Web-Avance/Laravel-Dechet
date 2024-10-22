@@ -31,4 +31,12 @@ class Collectedechets extends Model
                     ->withTimestamps();
     }
 
+
+    protected $appends = ['distance'];
+
+    public function getDistanceAttribute() {
+        return $this->attributes['distance'] ?? null;
+    }
 }
+
+

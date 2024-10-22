@@ -212,16 +212,24 @@
 @extends('FrontOffice.LayoutFront.layout')
 @section('content')
     <div class="container-fluid blog py-2">
+
         <div class="container py-5">
             @if ($events->isNotEmpty())
                 <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
                     <h1 class="display-4 mb-4">Tous les Événements</h1>
-                    <p class="mb-0">
+                    <p class="mb-0 ">
                         Participez à un événement pour rencontrer de nouveaux amis et vivre de nouvelles expériences, tout
                         en
                         découvrant des opportunités intéressantes.
                     </p>
+                    <div class="mt-4 d-flex justify-content-center align-items-center">
+                        <input type="text" id="search" placeholder="Rechercher des événements..."
+                            class="form-control me-2" style="max-width: 400px;">
+                        <a href="{{ route('evenement.proches') }}" class="btn btn-primary">Événements Proches</a>
+                    </div>
                 </div>
+
+
                 <div class="row g-4 justify-content-center">
                     @foreach ($events as $event)
                         <div class="col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
@@ -290,7 +298,10 @@
                                             Détails <i class="fa fa-arrow-right"></i>
                                         </a>
 
-                                        @if ($variablePourDisabledButton[$event->id] || $event->nbparticipant === $event->Maxnbparticipant)
+                                        @if (
+                                            $variablePourDisabledButton[$event->id] ||
+                                                $event->nbparticipant === $event->Maxnbparticipant ||
+                                                now()->greaterThan(\Carbon\Carbon::parse($event->date)))
                                             <button type="button" class="btn btn-secondary"
                                                 style="margin-left: 10px; cursor: not-allowed;" disabled>
                                                 <span class="fa fa-lock"></span> <!-- Lock icon to indicate disabled -->
@@ -306,8 +317,6 @@
                                             </form>
                                         @endif
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
@@ -341,6 +350,21 @@
         </div>
     </div>
 
+    <script>
+        document.getElementById('search').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const events = document.querySelectorAll('.blog-item');
+
+            events.forEach(event => {
+                const title = event.querySelector('.blog-content h5').textContent.toLowerCase();
+                if (title.includes(query)) {
+                    event.style.display = 'block'; // Show matched event
+                } else {
+                    event.style.display = 'none'; // Hide unmatched event
+                }
+            });
+        });
+    </script>
 
     <!-- Modal for Event Details -->
     <div class="modal fade" id="eventDetailsModal" tabindex="-1" aria-labelledby="eventDetailsModalLabel"
