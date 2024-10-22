@@ -31,6 +31,14 @@ class User extends Authenticatable
     ];
 
     /**
+     * Get the user's active abonnement.
+     */
+    public function abonnement()
+    {
+        return $this->hasOne(Abonnement::class);
+    }
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>

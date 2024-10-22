@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Abonnement;
 use App\Models\PlanAbonnement;
 use Illuminate\Http\Request;
-
+use App\Models\User;
 class AbonnementController extends Controller
 {
     /**
@@ -16,6 +16,8 @@ class AbonnementController extends Controller
     public function index()
     {
         $abonnement = Abonnement::with('PlanAbonnement')->get();
+        $abonnement = Abonnement::with(['planAbonnement', 'user'])->get();
+
         return view('abonnement.abonnement', compact('abonnement'));
     }
 
@@ -25,31 +27,36 @@ class AbonnementController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-{
-    // Fetch all PlanAbonnement records instead of using the variable $abonnement for clarity
-    $plans = PlanAbonnement::all();
-    return view('abonnement.create', compact('plans')); // Pass 'plans' to the view
-}
+    {
+        // Fetch all PlanAbonnement records and Users
+        $plans = PlanAbonnement::all();
+        $users = User::all(); // Fetch all users
 
-public function store(Request $request)
-{
-    $data = $request->validate([
-        'plan_abonnement_id' => 'required|exists:plan_abonnement,id', // Validate the plan_abonnement_id exists
-        'date_debut' => 'required|date',
-        'image' => 'nullable|image',
-    ]);
-
-    // Handle image upload
-    if ($request->hasFile('image')) {
-        $data['image'] = $request->file('image')->store('images/abonnement', 'public');
+        return view('abonnement.create', compact('plans', 'users')); // Pass 'plans' and 'users' to the view
     }
 
-    // Use the abonnement relationship instead of rooms()
-    $planAbonnement = PlanAbonnement::findOrFail($data['plan_abonnement_id']);
-    $planAbonnement->abonnement()->create($data);
 
-    return redirect()->route('abonnement.index')->with('success', 'Abonnement created successfully.');
-}
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'plan_abonnement_id' => 'required|exists:plan_abonnement,id', // Validate the plan_abonnement_id exists
+            'user_id' => 'required|exists:users,id', // Validate the user_id exists
+            'date_debut' => 'required|date',
+            'image' => 'nullable|image',
+        ]);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('images/abonnement', 'public');
+        }
+
+        // Create the abonnement for the selected user
+        $planAbonnement = PlanAbonnement::findOrFail($data['plan_abonnement_id']);
+        $abonnement = $planAbonnement->abonnement()->create($data);
+
+        return redirect()->route('abonnement.index')->with('success', 'Abonnement created successfully.');
+    }
+
 
     /**
      * Display the specified resource.
@@ -113,4 +120,35 @@ public function store(Request $request)
         $abonnement->delete();
         return redirect()->route('abonnement.index')->with('success', 'abonnement deleted successfully.');
     }
+
+
+    public function subscribe(Request $request)
+{
+
+
+    // Get the selected plan
+    $plan = PlanAbonnement::findOrFail($request->plan_id);
+
+    // Get the authenticated user
+    //$user = Auth::user();
+
+    // Check if user already has an active subscription for the same plan
+
+
+   /* if ($user->abonnements()->where('plan_abonnement_id', $plan->id)->exists()) {
+        return redirect()->back()->with('error', 'You are already subscribed to this plan.');
+    }*/
+
+    // Create a new Abonnement
+    Abonnement::create([
+       // 'user_id' => $user->id,
+       'user_id' => 1,
+        'plan_abonnement_id' => $plan->id,
+        'date_debut' => $request->date_debut,
+        // You can add more fields like 'date_fin' or price if needed
+    ]);
+
+    return redirect()->back()->with('success', 'You have successfully subscribed to the ' . $plan->type . ' plan.');
+}
+
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('plan_abonnement_id')->constrained('plan_abonnement')->onDelete('cascade');
             $table->date('date_debut');
             $table->string('image')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade'); // Add user_id foreign key
             $table->timestamps();
         });
     }

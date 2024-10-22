@@ -97,7 +97,7 @@
 }
 
 
-/*** Topbar Start ***/ 
+/*** Topbar Start ***/
 .topbar .dropdown-toggle::after {
     border: none;
     content: "\f107";
@@ -366,7 +366,7 @@
 /*** Feature Start ***/
 .feature .feature-item {
     border-radius: 10px;
-    background: var(--bs-white);
+    background: #E9EAEC;
     transition: 0.5s;
 }
 
@@ -401,6 +401,7 @@
     background: var(--bs-dark);
     transition: 0.5s;
     z-index: 1;
+    opacity: 20%;
 }
 
 .feature .feature-item:hover .feature-icon::after {
@@ -655,7 +656,7 @@
     overflow: hidden;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-} 
+}
 
 .team .team-item .team-img img {
     transition: 0.5s;
