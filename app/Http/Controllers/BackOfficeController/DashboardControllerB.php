@@ -11,7 +11,7 @@ use App\Models\Typedechets;
 
 class DashboardControllerB extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // $table->enum('role', ['Responsable_Centre', 'Responsable_Entreprise', 'admin', 'user', 'verifier'])->default('user'); // Champ pour le rôle
 
@@ -53,6 +53,8 @@ class DashboardControllerB extends Controller
             // Préparer les données pour le graphique
             $labels = $topTypesDechets->pluck('typeDeDechet.type')->toArray(); // Obtenir les noms des types de déchets
             $data = $topTypesDechets->pluck('occurrences')->toArray(); // Obtenir les occurrences
+
+
 
             return view('BackOffice/dashboard/dashboard', compact(
                 'nbUserRoleCentre',
