@@ -15,9 +15,12 @@ return new class extends Migration
     {
         Schema::create('abonnement', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('plan_abonnement_id')->constrained('plan_abonnement')->onDelete('cascade');
             $table->date('date_debut');
-            $table->date('date_fin');
-            $table->string('etat');
+            $table->string('image')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->boolean('is_payed')->default(false);
+            $table->boolean('is_accepted')->default(false);
             $table->timestamps();
         });
     }

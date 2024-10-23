@@ -26,6 +26,8 @@ use Laravel\Jetstream\Http\Controllers\Inertia\UserProfileController;
 use App\Http\Controllers\BackOfficeController\DemandecollecteController;
 use App\Http\Controllers\BackOfficeController\AnnonceDechetsController;
 use App\Http\Controllers\BackOfficeController\PaymentDechetController;
+use App\Http\Controllers\AbonnementController;
+use App\Http\Controllers\PlanAbonnementController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -44,6 +46,9 @@ Route::get('/verifierAuth/{cin}', function ($cin) {
 
 // Prefix for the backOffice:
 Route::prefix('back')->middleware('auth')->group(function () {
+    Route::resource('/abonnement', AbonnementController::class);
+    Route::resource('/planabonnement', PlanAbonnementController::class);
+    Route::patch('/back/abonnement/{abonnement}/update-status', [AbonnementController::class, 'updateStatus'])->name('abonnement.updateStatus');
     Route::get('/dashboard', [DashboardControllerB::class, 'index'])->name('dashboard');
     Route::get('/exemple', [ExempleController::class, 'index']);
     Route::get('/contracts', [ContractsControllerB::class, 'index']);
@@ -112,7 +117,23 @@ Route::prefix('front')->middleware('auth')->group(function () {
     Route::get('/entreprises/{entreprise_id}/contracts/{centre_id}/create', [ContractsController::class, 'create'])->name('contracts.create');
     Route::post('/entreprises/contracts/create/{id}/{id2}', [ContractsController::class, 'store'])->name('contracts.store');
     Route::get('/entreprises/{entreprise}/centres/{centre}/contracts/create', [ContractsController::class, 'createContract'])->name('contracts.create');
-    Route::get('/home', [DashboardControllerF::class, 'index'])->name('FrontHome');
+    Route::get('/plans', [PlanAbonnementController::class, 'showPlansFront'])->name('showPlansFront');
+    // Subscription route (change this line)
+    Route::post('/subscribe', [AbonnementController::class, 'subscribe'])->name('subscribe'); // This should handle the subscription logic
+
+    // Stripe payment routes
+    Route::post('/stripe/payment', [StripeController::class, 'handlePayment'])->name('stripe.payment');
+
+    // Payment success and cancel routes
+    Route::get('/payment/success', function () {
+        return 'Payment Successful!';
+    })->name('payment.success');
+
+    Route::get('/payment/cancel', function () {
+        return 'Payment Canceled!';
+    })->name('payment.cancel');
+    Route::post('/test/{id}', [AbonnementController::class, 'test'])->name('abonnement.test');
+
 });
 
 //Prefix pour le frontOffice :
@@ -136,4 +157,5 @@ Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name(
 Route::get('/denied', function () {
     return view('AccessDenied');
 })->name('AccessDenied');
+
 

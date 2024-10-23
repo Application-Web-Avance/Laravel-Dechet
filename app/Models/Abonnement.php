@@ -9,6 +9,15 @@ class Abonnement extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'date_debut',
+        'plan_abonnement_id',
+        'image',
+        'user_id',
+        'is_accepted',
+        'is_payed'
+    ];
+
     /**
      * The table associated with the model.
      *
@@ -16,17 +25,11 @@ class Abonnement extends Model
      */
     protected $table = 'abonnement';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'date_debut',
-        'date_fin',
-        'etat',
-    ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     /**
      * Indicates if the model should be timestamped.
      *
