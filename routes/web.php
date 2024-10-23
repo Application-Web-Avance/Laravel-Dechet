@@ -1,13 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Controllers\FrontOfficeController\HomeController;
 use App\Http\Controllers\BackOfficeController\ExempleController;
 use App\Http\Controllers\BackOfficeController\ContractsControllerB;
 use App\Http\Controllers\BackOfficeController\DashboardControllerB;
-use App\Http\Controllers\FrontOfficeController\EntrepriseController;
 use App\Http\Controllers\FrontOfficeController\ContractsController;
+use App\Http\Controllers\FrontOfficeController\EntrepriseController;
 
 
 /*
@@ -46,7 +47,21 @@ Route::prefix('front')->group(function () {
     Route::get('/entreprises/contracts', [ContractsController::class,  'index'])->name('contracts.index');
     Route::get('/entreprises/{entreprise_id}/contracts/{centre_id}/create', [ContractsController::class, 'create'])->name('contracts.create');
     Route::post('/entreprises/contracts/create/{id}/{id2}', [ContractsController::class, 'store'])->name('contracts.store');
+    Route::get('/entreprises/{entreprise}/centres/{centre}/contracts/create', [ContractsController::class, 'createContract'])->name('contracts.create');
+
 });
+
+Route::get('/test-email', function() {
+    $user = Auth::user();
+
+    Mail::raw('This is a test email', function ($message) use ($user) {
+        $message->to($user->email)
+                ->subject('Test Email');
+    });
+});
+
+
+
 
 
 

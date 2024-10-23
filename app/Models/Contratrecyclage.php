@@ -18,6 +18,7 @@ class Contratrecyclage extends Model
      * @var string
      */
     protected $table = 'contratrecyclage';
+    
 
     /**
      * The attributes that are mass assignable.
@@ -33,7 +34,7 @@ class Contratrecyclage extends Model
         'centre_id',
         'pdf_proof', // Add this field
     ];
-    
+    protected $appends = ['duree_restante'];
 
     /**
      * Indicates if the model should be timestamped.

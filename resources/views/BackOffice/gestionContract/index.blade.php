@@ -4,7 +4,6 @@
 
 @section('content')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @flasher_render
     <div class="container-fluid p-0">
         <div class="row">
             <div class="col-12">

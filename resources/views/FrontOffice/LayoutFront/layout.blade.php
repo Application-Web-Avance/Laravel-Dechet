@@ -112,6 +112,47 @@
                                 </div>
                             </div>
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
+<!--Notfication reminder for reponsable entreprise -->
+
+<li class="nav-item dropdown">
+    <a class="nav-icon" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
+        <div class="position-relative">
+            <i class="align-middle" data-feather="bell"></i>
+            <span class="indicator">{{ count($expiringContracts ?? []) }}</span>
+        </div>
+    </a>
+    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
+        <div class="dropdown-menu-header">
+            {{ count($expiringContracts ?? []) }} New Notifications
+        </div>
+        @if (!empty($expiringContracts))
+            
+        
+        <div class="list-group">
+            @forelse($expiringContracts as $contract)
+                <a href="/contracts/{{ $contract['contract_id'] }}" class="list-group-item">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                            <i class="text-warning" data-feather="bell"></i>
+                        </div>
+                        <div class="col-10">
+                            <div class="text-dark">Contract expiring for {{ $contract['entreprise'] }}</div>
+                            <div class="text-muted small mt-1">Signed on: {{ $contract['signature_date'] }}</div>
+                            <div class="text-muted small mt-1">Expires on: {{ $contract['expiration_date'] }}</div>
+                        </div>
+                    </div>
+                </a>
+            @empty
+                <div class="dropdown-item text-muted">No expiring contracts.</div>
+            @endforelse
+        </div>
+        @endif
+    </div>
+</li>
+
+
+
+
                             <div class="nav-btn px-3">
                                 <button class="btn-search btn btn-primary btn-md-square rounded-circle flex-shrink-0" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search"></i></button>
                                 <a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Get a Quote</a>
@@ -156,7 +197,7 @@
 
 
 
-    <!-- Modal Search End -->  
+        <!-- Modal Search End -->  
         @yield('content')
         @yield('entreprise_content')
 
@@ -179,7 +220,8 @@
         <script src="{{ asset('front content/lib/counterup/counterup.min.js')}}"></script>
         <script src="{{ asset('front content/lib/lightbox/js/lightbox.min.js')}}"></script>
         <script src="{{ asset('front content/lib/owlcarousel/owl.carousel.min.js')}}"></script>
-        
+        <script src="{{ asset ('back content/js/app.js')}}"></script>
+
 
         <!-- Template Javascript -->
         <script src="{{ asset('front content/js/main.js')}}"></script>

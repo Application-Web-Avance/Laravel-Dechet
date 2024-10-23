@@ -15,8 +15,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            app()->make(YourController::class)->checkForExpiringContracts();
+        })->daily(); // Adjust the frequency as needed
     }
+
 
     /**
      * Register the commands for the application.

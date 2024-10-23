@@ -16,7 +16,7 @@ class ContractsControllerB extends Controller
 
         // Retrieve contracts for this user
         $contracts = Contratrecyclage::with('entreprise', 'centre')
-            ->paginate(1); // Assuming you want pagination
+            ->paginate(2); // Assuming you want pagination
 
         return view('BackOffice.gestionContract.index', compact('contracts'));
     }

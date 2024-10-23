@@ -1,5 +1,9 @@
-<div class="container">
-    <div class="row">
+@extends('FrontOffice.LayoutFront.layout')
+
+@section('entreprise_content')
+
+<div class="container mt-5 mb-5">
+    <div class="row ">
         <div class="col-md-6">
             <h4>Informations sur l'Entreprise</h4>
             <p>Nom : {{ $entreprise->nom }}</p>
@@ -15,3 +19,4 @@
         </div>
     </div>
 </div>
+@endsection
