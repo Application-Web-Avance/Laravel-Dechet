@@ -1,6 +1,5 @@
 @extends('BackOffice.LayoutBack.layout')
 
-
 @section('content')
     <!-- Inclure Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -68,6 +67,170 @@
 
     <div class="container-fluid p-0">
         <h1 class="h3 mb-3"><strong>Tableau de Bord des Statistiques </strong></h1>
+
+
+        @if (Auth::user()->role == 'Responsable_Centre' ||
+                Auth::user()->role == 'Responsable_Entreprise' ||
+                Auth::user()->role == 'admin')
+            <div class="row mt-5">
+                <div class="col-xl-6 col-xxl-5 d-flex">
+                    <div class="w-100">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col mt-0">
+                                                <h5 class="card-title">Paiements Effectués</h5>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <div class="stat text-primary">
+                                                    <i class="align-middle" data-feather="check-circle"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h1 class="mt-1 mb-3">{{ $paiements_effectues }}</h1>
+
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col mt-0">
+                                                <h5 class="card-title">Paiements en Attente</h5>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <div class="stat text-primary">
+                                                    <i class="align-middle" data-feather="shopping-cart"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h1 class="mt-1 mb-3">{{ $paiements_en_attente }}</h1>
+
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col mt-0">
+                                                <h5 class="card-title">Annonces non Disponible</h5>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <div class="stat text-primary">
+                                                    <i class="align-middle" data-feather="x-circle"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h1 class="mt-1 mb-3">{{ $annonces_en_attente }}</h1>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col mt-0">
+                                                <h5 class="card-title">Total des Paiements Effectués</h5>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <div class="stat text-primary">
+                                                    <i class="align-middle" data-feather="dollar-sign"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h1 class="mt-1 mb-3">
+                                            {{ number_format($total_paiements, 2, ',', ' ') }} DT
+                                        </h1>
+
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col mt-0">
+                                                <h5 class="card-title">Annonces</h5>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <div class="stat text-primary">
+                                                    <i class="align-middle" data-feather="archive"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h1 class="mt-1 mb-3">{{ $total_annonces }}</h1>
+
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col mt-0">
+                                                <h5 class="card-title">Annonces disponible</h5>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <div class="stat text-primary">
+                                                    <i class="align-middle" data-feather="loader"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h1 class="mt-1 mb-3">{{ $annonces_disponibles }}</h1>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-7">
+                    <div class="card flex-fill w-100">
+                        <div class="card-header">
+
+                            <h5 class="card-title mb-0">Paiements de mouvement récents</h5>
+                        </div>
+                        <div class="card-body py-3">
+                            <div class="chart chart-sm">
+                                <canvas id="paiementsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                var ctx = document.getElementById('paiementsChart').getContext('2d');
+                var paiementsChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: @json($dates),
+                        datasets: [{
+                            label: 'Paiements au fil du temps',
+                            data: @json($paiements_montants),
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+        @endif
+
+
 
         @if (Auth::user()->role == 'admin')
             <div class="row">
@@ -236,196 +399,6 @@
                             <h5 class="card-title">Types de déchets les plus utilisés dans les événements :</h5>
                             <canvas id="typesDechetsChart" style="max-height: 700px; max-width: 100%;"></canvas>
                         </div>
-<div class="row">
-    <div class="col-xl-6 col-xxl-5 d-flex">
-        <div class="w-100">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col mt-0">
-                                    <h5 class="card-title">Paiements Effectués</h5>
-                                </div>
-
-                                <div class="col-auto">
-                                    <div class="stat text-primary">
-                                        <i class="align-middle" data-feather="check-circle"></i>
-                                    </div>
-                                </div>
-                            </div>
-{{--                            <h1 class="mt-1 mb-3">{{ $paiements_effectues  }}</h1>--}}
-
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col mt-0">
-                                    <h5 class="card-title">Paiements en Attente</h5>
-                                </div>
-
-                                <div class="col-auto">
-                                    <div class="stat text-primary">
-                                        <i class="align-middle" data-feather="shopping-cart"></i>
-                                    </div>
-                                </div>
-                            </div>
-{{--                            <h1 class="mt-1 mb-3">{{ $paiements_en_attente }}</h1>--}}
-
-                        </div>
-                    </div>
-                    <div class="card">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col mt-0">
-                                                        <h5 class="card-title">Annonces non Disponible</h5>
-                                                    </div>
-
-                                                    <div class="col-auto">
-                                                        <div class="stat text-primary">
-                                                            <i class="align-middle" data-feather="x-circle"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-{{--                                                <h1 class="mt-1 mb-3">{{  $annonces_en_attente }}</h1>--}}
-
-                                            </div>
-                                        </div>
-
-                </div>
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col mt-0">
-                                    <h5 class="card-title">Total des Paiements Effectués</h5>
-                                </div>
-
-                                <div class="col-auto">
-                                    <div class="stat text-primary">
-                                        <i class="align-middle" data-feather="dollar-sign"></i>
-                                    </div>
-                                </div>
-                            </div>
-{{--                            <h1 class="mt-1 mb-3">--}}
-{{--                            {{ number_format($total_paiements, 2, ',', ' ') }} DT--}}
-{{--                            </h1>--}}
-
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col mt-0">
-                                    <h5 class="card-title">Annonces</h5>
-                                </div>
-
-                                <div class="col-auto">
-                                    <div class="stat text-primary">
-                                        <i class="align-middle" data-feather="archive"></i>
-                                    </div>
-                                </div>
-                            </div>
-{{--                            <h1 class="mt-1 mb-3">{{ $total_annonces }}</h1>--}}
-
-                        </div>
-                    </div>
-                     <div class="card">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col mt-0">
-                                                        <h5 class="card-title">Annonces disponible</h5>
-                                                    </div>
-
-                                                    <div class="col-auto">
-                                                        <div class="stat text-primary">
-                                                            <i class="align-middle" data-feather="loader"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-{{--                                                <h1 class="mt-1 mb-3">{{ $annonces_disponibles }}</h1>--}}
-
-                                            </div>
-                                        </div>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-6 col-xxl-7">
-        <div class="card flex-fill w-100">
-            <div class="card-header">
-
-                <h5 class="card-title mb-0">Paiements de mouvement récents</h5>
-            </div>
-            <div class="card-body py-3">
-                <div class="chart chart-sm">
-                    <canvas id="paiementsChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-12 col-md-6 col-xxl-3 d-flex order-2 order-xxl-3">
-        <div class="card flex-fill w-100">
-            <div class="card-header">
-
-                <h5 class="card-title mb-0">Browser Usage</h5>
-            </div>
-            <div class="card-body d-flex">
-                <div class="align-self-center w-100">
-                    <div class="py-3">
-                        <div class="chart chart-xs">
-                            <canvas id="chartjs-dashboard-pie"></canvas>
-                        </div>
-                    </div>
-
-                    <table class="table mb-0">
-                        <tbody>
-                            <tr>
-                                <td>Chrome</td>
-                                <td class="text-end">4306</td>
-                            </tr>
-                            <tr>
-                                <td>Firefox</td>
-                                <td class="text-end">3801</td>
-                            </tr>
-                            <tr>
-                                <td>IE</td>
-                                <td class="text-end">1689</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-12 col-md-12 col-xxl-6 d-flex order-3 order-xxl-2">
-        <div class="card flex-fill w-100">
-            <div class="card-header">
-
-                <h5 class="card-title mb-0">Real-Time</h5>
-            </div>
-            <div class="card-body px-4">
-                <div id="world_map" style="height:350px;"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-12 col-md-6 col-xxl-3 d-flex order-1 order-xxl-1">
-        <div class="card flex-fill">
-            <div class="card-header">
-
-                <h5 class="card-title mb-0">Calendar</h5>
-            </div>
-            <div class="card-body d-flex">
-                <div class="align-self-center w-100">
-                    <div class="chart">
-                        <div id="datetimepicker-dashboard"></div>
                     </div>
                 </div>
 
@@ -583,9 +556,9 @@
                                         `<i data-feather="wind" class="align-middle me-2"></i>Vitesse du vent : ${data.current.wind_kph} km/h`;
                                     // Ajouter Latitude et Longitude
                                     document.getElementById('lat').innerText = data.location
-                                    .lat; // Assurez-vous que les données de latitude existent
+                                        .lat; // Assurez-vous que les données de latitude existent
                                     document.getElementById('lon').innerText = data.location
-                                    .lon; // Assurez-vous que les données de longitude existent
+                                        .lon; // Assurez-vous que les données de longitude existent
                                     // N'oubliez pas de réinitialiser les icônes après la mise à jour
                                     feather.replace();
 
@@ -615,8 +588,8 @@
 
         @if (Auth::user()->role == 'Responsable_Centre' || Auth::user()->role == 'Responsable_Entreprise')
             <div class="row">
-                <!-- Card 1 -->
-                <div class="col-sm-6 col-md-4 mb-4">
+                <!-- Card 1: Participant -->
+                <div class="col-sm-6 col-md-6 mb-4">
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
@@ -631,7 +604,8 @@
                             </div>
                             <h1 class="mt-1 mb-3">{{ $totalParticipants }}</h1>
                             <div class="mb-0">
-                                <span class="text-muted">Total des Participant de @if (Auth::user()->role == 'Responsable_Centre')
+                                <span class="text-muted">Total des Participants de
+                                    @if (Auth::user()->role == 'Responsable_Centre')
                                         centre
                                     @else
                                         entreprise
@@ -641,11 +615,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <!-- Colonne pour le graphique des types de déchets -->
-                <div class="col-sm-6 col-md-4">
+                <!-- Card 2: Graphique des types de déchets -->
+                <div class="col-sm-6 col-md-6">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Types de déchets les plus utilisés dans les événements :</h5>
@@ -655,6 +627,7 @@
                     </div>
                 </div>
             </div>
+
 
             <script>
                 var ctx = document.getElementById('typesDechetsChart').getContext('2d');
@@ -682,34 +655,9 @@
         @endif
 
 
+
+
     </div>
-</div>
 
-
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{{--<script>--}}
-{{--    var ctx = document.getElementById('paiementsChart').getContext('2d');--}}
-{{--    var paiementsChart = new Chart(ctx, {--}}
-{{--        type: 'line',--}}
-{{--        data: {--}}
-{{--            labels: @json($dates),--}}
-{{--            datasets: [{--}}
-{{--                label: 'Paiements au fil du temps',--}}
-{{--                data: @json($paiements_montants),--}}
-{{--                backgroundColor: 'rgba(54, 162, 235, 0.2)',--}}
-{{--                borderColor: 'rgba(54, 162, 235, 1)',--}}
-{{--                borderWidth: 1--}}
-{{--            }]--}}
-{{--        },--}}
-{{--        options: {--}}
-{{--            scales: {--}}
-{{--                y: {--}}
-{{--                    beginAtZero: true--}}
-{{--                }--}}
-{{--            }--}}
-{{--        }--}}
-{{--    });--}}
-{{--</script>--}}
+    
 @endsection
-

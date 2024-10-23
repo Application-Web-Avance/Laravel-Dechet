@@ -212,7 +212,7 @@
 @extends('FrontOffice.LayoutFront.layout')
 @section('content')
 
-        <div class="container-fluid blog py-2">
+    <div class="container-fluid blog py-2">
 
         <div class="container py-5">
             @if ($events->isNotEmpty())
@@ -393,13 +393,13 @@
                     <!-- Horizontal line under the image -->
                     <hr style="border-top: 2px solid #007bff; width: 80%; margin: 0 auto 1rem;">
 
-
-                    <!-- Event Details -->
-                    <p class="lead"><strong>
-                            Nom de la {{ $event->user->role == 'Responsable_Centre' ? 'centre' : 'entreprise' }} :
-                        </strong> <span id="nomPrincipale" class="text-primary"></span>
-                    </p>
-
+                    @if (!empty($event->user->role))
+                        <!-- Event Details -->
+                        <p class="lead"><strong>
+                                Nom de la {{ $event->user->role == 'Responsable_Centre' ? 'centre' : 'entreprise' }} :
+                            </strong> <span id="nomPrincipale" class="text-primary">{{ $nomPrincipale ?? '' }}</span>
+                        </p>
+                    @endif
                     <p><strong>Nom de l'événement :</strong>
                         <span id="eventName" class="text-dark"></span>
                     </p>

@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\BackOfficeController;
 
 use App\Http\Controllers\Controller;
+use App\Models\AnnonceDechet;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Collectedechets;
-use App\Models\Typedechets;
-use App\Models\AnnonceDechet;
 use App\Models\PaymentDechet;
-
+use App\Models\Typedechets;
 
 class DashboardControllerB extends Controller
 {
     public function index(Request $request)
     {
         // $table->enum('role', ['Responsable_Centre', 'Responsable_Entreprise', 'admin', 'user', 'verifier'])->default('user'); // Champ pour le rôle
+        $user = Auth::user();
 
         // Vérification du rôle de l'utilisateur connecté
         if (Auth::user()->role == 'admin') {
@@ -57,6 +57,17 @@ class DashboardControllerB extends Controller
             $labels = $topTypesDechets->pluck('typeDeDechet.type')->toArray(); // Obtenir les noms des types de déchets
             $data = $topTypesDechets->pluck('occurrences')->toArray(); // Obtenir les occurrences
 
+            $annonces = AnnonceDechet::where('utilisateur_id', $user->id)->get();
+            $total_annonces = AnnonceDechet::where('utilisateur_id', $user->id)->count();
+            $annonces_disponibles = AnnonceDechet::where('status', 'disponible')->count();
+            $annonces_en_attente = AnnonceDechet::where('status', 'non disponible')->count();
+            $total_paiements = PaymentDechet::where('user_id', $user->id)->sum('price');
+            $paiements_effectues = PaymentDechet::where('user_id', $user->id)->where('payment_status', 'paid')->count();
+            $paiements_en_attente = PaymentDechet::where('user_id', $user->id)->where('payment_status', 'pending')->count();
+            $paiements = PaymentDechet::where('user_id', $user->id)->where('payment_status', 'paid')->get();
+            $dates = $paiements->pluck('payment_date')->toArray();
+            $paiements_montants = $paiements->pluck('price')->toArray();
+
 
 
             return view('BackOffice/dashboard/dashboard', compact(
@@ -67,12 +78,11 @@ class DashboardControllerB extends Controller
                 'nbTotalEventsByEntreprise',
                 'nbTotalEventsByCentre',
                 'labels',
-                'data',
+                'data','annonces', 'total_paiements', 'paiements_effectues', 'paiements_en_attente', 'dates', 'paiements_montants', 'total_annonces', 'annonces_disponibles', 'annonces_en_attente'
             ));
         }
 
         // Si l'utilisateur connecté est Responsable_Centre ou Responsable_Entreprise
-        $user = Auth::user();
         if ($user->role == 'Responsable_Centre') {
             $topTypesDechetsUser = Collectedechets::where('user_id', $user->id) // Filtrer par utilisateur connecté
                 ->select('type_de_dechet_id') // Utiliser l'ID pour rejoindre avec le modèle Typedechets
@@ -93,9 +103,20 @@ class DashboardControllerB extends Controller
                 ->get()
                 ->sum('participants_count');
 
+                $annonces = AnnonceDechet::where('utilisateur_id', $user->id)->get();
+                $total_annonces = AnnonceDechet::where('utilisateur_id', $user->id)->count();
+                $annonces_disponibles = AnnonceDechet::where('status', 'disponible')->count();
+                $annonces_en_attente = AnnonceDechet::where('status', 'non disponible')->count();
+                $total_paiements = PaymentDechet::where('user_id', $user->id)->sum('price');
+                $paiements_effectues = PaymentDechet::where('user_id', $user->id)->where('payment_status', 'paid')->count();
+                $paiements_en_attente = PaymentDechet::where('user_id', $user->id)->where('payment_status', 'pending')->count();
+                $paiements = PaymentDechet::where('user_id', $user->id)->where('payment_status', 'paid')->get();
+                $dates = $paiements->pluck('payment_date')->toArray();
+                $paiements_montants = $paiements->pluck('price')->toArray();
+    
 
 
-            return view('BackOffice/dashboard/dashboard', compact('labels', 'data', 'totalParticipants'));
+            return view('BackOffice/dashboard/dashboard', compact('labels', 'data', 'totalParticipants','annonces', 'total_paiements', 'paiements_effectues', 'paiements_en_attente', 'dates', 'paiements_montants', 'total_annonces', 'annonces_disponibles', 'annonces_en_attente'));
         }
 
         if ($user->role == 'Responsable_Entreprise') {
@@ -118,25 +139,22 @@ class DashboardControllerB extends Controller
                 ->sum('participants_count');
 
 
+                $annonces = AnnonceDechet::where('utilisateur_id', $user->id)->get();
+                $total_annonces = AnnonceDechet::where('utilisateur_id', $user->id)->count();
+                $annonces_disponibles = AnnonceDechet::where('status', 'disponible')->count();
+                $annonces_en_attente = AnnonceDechet::where('status', 'non disponible')->count();
+                $total_paiements = PaymentDechet::where('user_id', $user->id)->sum('price');
+                $paiements_effectues = PaymentDechet::where('user_id', $user->id)->where('payment_status', 'paid')->count();
+                $paiements_en_attente = PaymentDechet::where('user_id', $user->id)->where('payment_status', 'pending')->count();
+                $paiements = PaymentDechet::where('user_id', $user->id)->where('payment_status', 'paid')->get();
+                $dates = $paiements->pluck('payment_date')->toArray();
+                $paiements_montants = $paiements->pluck('price')->toArray();
+    
 
-            return view('BackOffice/dashboard/dashboard', compact('labels', 'data', 'totalParticipants'));
+
+            return view('BackOffice/dashboard/dashboard', compact('labels', 'data', 'totalParticipants','annonces', 'total_paiements', 'paiements_effectues', 'paiements_en_attente', 'dates', 'paiements_montants', 'total_annonces', 'annonces_disponibles', 'annonces_en_attente'));
         }
 
         return view('BackOffice/dashboard/dashboard');
-        $user = Auth::user();
-
-            $annonces = AnnonceDechet::where('utilisateur_id', $user->id)->get();
-            $total_annonces = AnnonceDechet::where('utilisateur_id', $user->id)->count();
-            $annonces_disponibles = AnnonceDechet::where('status', 'disponible')->count();
-            $annonces_en_attente = AnnonceDechet::where('status', 'non disponible')->count();
-            $total_paiements = PaymentDechet::where('user_id', $user->id)->sum('price');
-            $paiements_effectues = PaymentDechet::where('user_id', $user->id)->where('payment_status', 'paid')->count();
-            $paiements_en_attente = PaymentDechet::where('user_id', $user->id)->where('payment_status', 'pending')->count();
-            $paiements = PaymentDechet::where('user_id', $user->id)->where('payment_status', 'paid')->get();
-            $dates = $paiements->pluck('payment_date')->toArray();
-            $paiements_montants = $paiements->pluck('price')->toArray();
-
-            return view('BackOffice/dashboard/dashboard', compact('annonces', 'total_paiements', 'paiements_effectues', 'paiements_en_attente', 'dates', 'paiements_montants', 'total_annonces', 'annonces_disponibles', 'annonces_en_attente'));
-
     }
 }

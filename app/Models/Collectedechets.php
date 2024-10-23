@@ -27,7 +27,16 @@ class Collectedechets extends Model
     // Relation Many-to-Many avec Participant via table pivot
     public function participants()
     {
-        return $this->belongsToMany(User::class, 'participant')
+        return $this->belongsToMany(User::class, 'participant', 'collecte_dechets_id', 'user_id')
                     ->withTimestamps();
     }
+
+
+    protected $appends = ['distance'];
+
+    public function getDistanceAttribute() {
+        return $this->attributes['distance'] ?? null;
+    }
 }
+
+
