@@ -10,7 +10,6 @@ class DashboardControllerF extends Controller
 {
     public function index()
     {
-        return view('FrontOffice/home/home');
         $annonces = AnnonceDechet::all();
         return view('FrontOffice/home/home', compact('annonces'));
     }
