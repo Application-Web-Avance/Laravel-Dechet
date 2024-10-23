@@ -887,3 +887,104 @@
 /*** copyright end ***/
 
 
+.button-18 { align-items: center; background-color: #0A66C2; border: 0; border-radius: 100px; box-sizing: border-box; color: #ffffff; cursor: pointer; display: inline-flex; font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 600; justify-content: center; line-height: 20px; max-width: 480px; min-height: 40px; min-width: 0px; overflow: hidden; padding: 0px; padding-left: 20px; padding-right: 20px; text-align: center; touch-action: manipulation; transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s; user-select: none; -webkit-user-select: none; vertical-align: middle; } .button-18:hover, .button-18:focus { background-color: #16437E; color: #ffffff; } .button-18:active { background: #09223b; color: rgb(255, 255, 255, .7); } .button-18:disabled { cursor: not-allowed; background: rgba(0, 0, 0, .08); color: rgba(0, 0, 0, .3); }
+
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 100); /* Gray color with 50% opacity */
+}
+
+/* Notification dropdown container */
+.nav-item .dropdown-menu {
+    width: 300px;
+    border-radius: 8px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+/* Notification header */
+.dropdown-menu-header {
+    font-weight: bold;
+    padding: 10px;
+    background-color: #0A66C2; /* Your preferred color */
+    color: white;
+    border-bottom: 1px solid #E9E9E9;
+    text-align: center;
+}
+
+/* Notification items */
+.list-group-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.list-group-item:hover {
+    background-color: #f9f9f9;
+}
+
+/* Notification icons */
+.list-group-item i {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.text-danger {
+    color: #e74c3c;
+}
+
+.text-warning {
+    color: #f39c12;
+}
+
+.text-primary {
+    color: #3498db;
+}
+
+.text-success {
+    color: #0A66C2;
+}
+
+/* Notification text */
+.text-dark {
+    font-weight: bold;
+}
+
+.text-muted {
+    font-size: 12px;
+    color: #999;
+}
+
+/* Notification count indicator */
+.indicator {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #e74c3c;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 4px 7px;
+    min-width: 20px;
+    text-align: center;
+    line-height: 1;
+}
+
+/* Notification footer */
+.dropdown-menu-footer {
+    padding: 10px;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+.dropdown-menu-footer a {
+    color: #3498db;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.dropdown-menu-footer a:hover {
+    text-decoration: underline;
+}

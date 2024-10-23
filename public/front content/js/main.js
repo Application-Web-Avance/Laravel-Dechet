@@ -102,3 +102,12 @@
 
 })(jQuery);
 
+// Assuming you have the userId available
+const userId = '{{ auth()->user()->id }}'; // Set this dynamically in your Blade template
+
+window.Echo.private(`App.Models.User.${userId}`)
+    .notification((notification) => {
+        console.log(notification.message); // This logs the message to the console
+        // Optionally, you can display a toast or modal to inform the user
+        alert(notification.message); // Simple alert for demonstration
+    });

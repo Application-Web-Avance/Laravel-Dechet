@@ -21,9 +21,9 @@ return new class extends Migration
             $table->integer('nbparticipant');
             $table->integer('Maxnbparticipant');
             $table->string('description');
-            $table->string('image')->nullable(); 
-            $table->foreignId('type_de_dechet_id')->constrained('typedechets')->onDelete('cascade'); 
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); 
+            $table->string('image')->nullable();
+            $table->foreignId('type_de_dechet_id')->constrained('typedechets')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

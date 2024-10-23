@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Entrepriserecyclage;
+use Laravel\Sanctum\HasApiTokens;
+use App\Models\Entrepriserecyclage;
+use Laravel\Jetstream\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
 
 class User extends Authenticatable
 {
@@ -28,7 +32,6 @@ class User extends Authenticatable
         'cin', // Assurez-vous que le CIN est inclus
         'date_naissance', // Assurez-vous que la date de naissance est incluse
         'role', // Ajoutez le champ role
-        'nomPrincipale' //c'est la presentation de nom d'entreprise ou nom de centre l'ors creation de compte de user
     ];
 
     /**
@@ -67,6 +70,10 @@ class User extends Authenticatable
     public function demandeRole()
     {
         return $this->hasOne(Demanderole::class);
+    }
+    public function entreprise(): HasMany
+    {
+        return $this->hasMany(Entrepriserecyclage:: class,'user_id') ;
     }
 
 

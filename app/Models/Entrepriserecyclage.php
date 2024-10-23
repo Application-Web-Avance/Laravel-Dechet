@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
+use App\Models\Contratrecyclage;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Entrepriserecyclage extends Model
 {
@@ -26,6 +30,9 @@ class Entrepriserecyclage extends Model
         'adresse',
         'numero_siret',
         'specialite',
+        'image_url', 
+        'description',
+        'user_id'
     ];
 
     /**
@@ -34,4 +41,14 @@ class Entrepriserecyclage extends Model
      * @var bool
      */
     public $timestamps = true;
+
+    public function contrats(): HasMany
+    {
+        return $this->hasMany(Contratrecyclage::class, 'entreprise_id'); // Corrected
+    }
+    
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User:: class);
+    }
 }

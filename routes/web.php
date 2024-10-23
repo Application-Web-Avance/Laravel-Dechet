@@ -1,14 +1,19 @@
 <?php
 
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BackOfficeController\CentreDeRecyclageController;
 use App\Http\Controllers\BackOfficeController\CollectDechetsController;
 use App\Http\Controllers\BackOfficeController\TypeDechetsController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BackOfficeController\DashboardControllerB;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use App\Http\Controllers\FrontOfficeController\HomeController;
 use App\Http\Controllers\BackOfficeController\ExempleController;
+use App\Http\Controllers\BackOfficeController\ContractsControllerB;
+use App\Http\Controllers\BackOfficeController\DashboardControllerB;
+use App\Http\Controllers\FrontOfficeController\ContractsController;
+use App\Http\Controllers\FrontOfficeController\EntrepriseController;
 use App\Http\Controllers\FrontOfficeController\DashboardControllerF;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FrontOfficeController\ParticipantController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
@@ -41,6 +46,8 @@ Route::get('/verifierAuth/{cin}', function ($cin) {
 Route::prefix('back')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardControllerB::class, 'index'])->name('dashboard');
     Route::get('/exemple', [ExempleController::class, 'index']);
+    Route::get('/contracts', [ContractsControllerB::class, 'index']);
+    Route::put('/contracts/{id}', [ContractsControllerB::class, 'updateStatus']);
 
     // CRUD for CollectDechets
     Route::get('/evenement', [CollectDechetsController::class, 'getAllCollect'])->name('evenement.index');
@@ -98,6 +105,20 @@ Route::prefix('front')->middleware('auth')->group(function () {
     Route::get('/evenement/proches', [ParticipantController::class, 'getCollectDechetProche'])->name('evenement.proches');
 });
 
+//Prefix pour le frontOffice :
+Route::prefix('front')->group(function () {
+    Route::get('/entreprises', [EntrepriseController::class, 'index'])->name('front.entreprise.index');
+    Route::post('/entreprises', [EntrepriseController::class, 'store'])->name('entreprises.store');
+    Route::put('/entreprises/{id}', [EntrepriseController::class, 'update'])->name('entreprises.update');
+    Route::delete('/entreprises/{id}', [EntrepriseController::class, 'destroy'])->name('entreprises.destroy');
+    Route::get('/entreprises/contracts', [ContractsController::class,  'index'])->name('contracts.index');
+    Route::get('/entreprises/{entreprise_id}/contracts/{centre_id}/create', [ContractsController::class, 'create'])->name('contracts.create');
+    Route::post('/entreprises/contracts/create/{id}/{id2}', [ContractsController::class, 'store'])->name('contracts.store');
+    Route::get('/entreprises/{entreprise}/centres/{centre}/contracts/create', [ContractsController::class, 'createContract'])->name('contracts.create');
+
+    Route::get('/home', [HomeController::class, 'index']);
+    // Vous pouvez ajouter d'autres routes liées au front-office ici
+});
 // Public Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -113,7 +134,6 @@ Route::middleware('guest')->group(function () {
     Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
 
 });
-
 // Logout
 Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 Route::get('/denied', function () {
