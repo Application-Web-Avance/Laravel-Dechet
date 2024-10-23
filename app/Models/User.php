@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Entrepriserecyclage;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Entrepriserecyclage;
 use Laravel\Jetstream\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -73,7 +72,7 @@ class User extends Authenticatable
     }
     public function entreprise(): HasMany
     {
-        return $this->hasMany(Entrepriserecyclage:: class,'user_id') ;
+        return $this->hasMany(Entrepriserecyclage::class,'user_id') ;
     }
 
 

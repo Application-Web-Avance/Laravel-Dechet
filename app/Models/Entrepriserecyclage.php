@@ -30,7 +30,7 @@ class Entrepriserecyclage extends Model
         'adresse',
         'numero_siret',
         'specialite',
-        'image_url', 
+        'image_url',
         'description',
         'user_id'
     ];
@@ -46,9 +46,9 @@ class Entrepriserecyclage extends Model
     {
         return $this->hasMany(Contratrecyclage::class, 'entreprise_id'); // Corrected
     }
-    
+
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User:: class);
+        return $this->belongsTo(User::class);
     }
 }

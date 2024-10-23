@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BackOfficeController\CentreDeRecyclageController;
@@ -7,7 +8,6 @@ use App\Http\Controllers\BackOfficeController\CollectDechetsController;
 use App\Http\Controllers\BackOfficeController\TypeDechetsController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
-use App\Http\Controllers\FrontOfficeController\HomeController;
 use App\Http\Controllers\BackOfficeController\ExempleController;
 use App\Http\Controllers\BackOfficeController\ContractsControllerB;
 use App\Http\Controllers\BackOfficeController\DashboardControllerB;
@@ -65,11 +65,12 @@ Route::prefix('back')->middleware('auth')->group(function () {
     Route::post('/users/{id}/accept', [AdminController::class, 'accept'])->name('users.accept');
     Route::post('/users/{id}/reject', [AdminController::class, 'reject'])->name('users.reject');
 
-    // Centres
     Route::get('/centres', [CentreDeRecyclageController::class, 'getUsersVerified'])->name('centres.index');
+    Route::get('/centres/type-dechet', [TypeDechetsController::class, 'getUsersVerified'])->name('type-dechets');
     Route::delete('/centres/{id}', [CentreDeRecyclageController::class, 'destroy'])->name('centres.destroy');
     Route::get('/centres/create', [CentreDeRecyclageController::class, 'create'])->name('centres.create');
     Route::post('/centres', [CentreDeRecyclageController::class, 'store'])->name('centres.store');
+    Route::post('/back/centres/type-dechet', [TypeDechetsController::class, 'store'])->name('type-dechets.store');
     Route::get('/centres/{id}', [CentreDeRecyclageController::class, 'edit'])->name('centres.edit');
     Route::put('/centres/{id}', [CentreDeRecyclageController::class, 'update'])->name('centres.update');
 
@@ -103,10 +104,6 @@ Route::prefix('front')->middleware('auth')->group(function () {
     Route::get('/participant', [ParticipantController::class, 'getEventsById'])->name('evenementFront.myEvents');
     Route::delete('/participant/{id}', [ParticipantController::class, 'supprimerParti'])->name('evenementFront.supprimer');
     Route::get('/evenement/proches', [ParticipantController::class, 'getCollectDechetProche'])->name('evenement.proches');
-});
-
-//Prefix pour le frontOffice :
-Route::prefix('front')->group(function () {
     Route::get('/entreprises', [EntrepriseController::class, 'index'])->name('front.entreprise.index');
     Route::post('/entreprises', [EntrepriseController::class, 'store'])->name('entreprises.store');
     Route::put('/entreprises/{id}', [EntrepriseController::class, 'update'])->name('entreprises.update');
@@ -115,11 +112,11 @@ Route::prefix('front')->group(function () {
     Route::get('/entreprises/{entreprise_id}/contracts/{centre_id}/create', [ContractsController::class, 'create'])->name('contracts.create');
     Route::post('/entreprises/contracts/create/{id}/{id2}', [ContractsController::class, 'store'])->name('contracts.store');
     Route::get('/entreprises/{entreprise}/centres/{centre}/contracts/create', [ContractsController::class, 'createContract'])->name('contracts.create');
-
-    Route::get('/home', [HomeController::class, 'index']);
-    // Vous pouvez ajouter d'autres routes liées au front-office ici
+    Route::get('/home', [DashboardControllerF::class, 'index'])->name('FrontHome');
 });
-// Public Routes
+
+//Prefix pour le frontOffice :
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Authentication Routes
