@@ -14,12 +14,14 @@ Route::prefix('back')->group(function () {
     Route::get('/exemple', [ExempleController::class, 'index']);
     Route::resource('/abonnement', AbonnementController::class);
     Route::resource('/planabonnement', PlanAbonnementController::class);
+    Route::patch('/back/abonnement/{abonnement}/update-status', [AbonnementController::class, 'updateStatus'])->name('abonnement.updateStatus');
+
 });
 
 // Prefix for the frontOffice:
 Route::prefix('front')->group(function () {
     Route::get('/home', [HomeController::class, 'index']);
-    Route::get('/plans', [PlanAbonnementController::class, 'showPlansFront']);
+    Route::get('/plans', [PlanAbonnementController::class, 'showPlansFront'])->name('showPlansFront');
 
     // Subscription route (change this line)
     Route::post('/subscribe', [AbonnementController::class, 'subscribe'])->name('subscribe'); // This should handle the subscription logic
@@ -35,6 +37,8 @@ Route::prefix('front')->group(function () {
     Route::get('/payment/cancel', function () {
         return 'Payment Canceled!';
     })->name('payment.cancel');
+
+    Route::post('/test/{id}', [AbonnementController::class, 'test'])->name('abonnement.test');
 
     // Webhook route
     Route::post('/stripe/webhook', [StripeController::class, 'handleWebhook'])->name('stripe.webhook');

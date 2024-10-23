@@ -8,7 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Abonnement extends Model
 {
     use HasFactory;
-    protected $fillable = ['date_debut', 'plan_abonnement_id', 'image','user_id'];
+
+    protected $fillable = [
+        'date_debut',
+        'plan_abonnement_id',
+        'image',
+        'user_id',
+        'is_accepted',
+        'is_payed'
+    ];
 
     protected $table = 'abonnement';
 
@@ -17,9 +25,6 @@ class Abonnement extends Model
         return $this->belongsTo(PlanAbonnement::class);
     }
 
-    /**
-     * Get the user that owns the abonnement.
-     */
     public function user()
     {
         return $this->belongsTo(User::class);

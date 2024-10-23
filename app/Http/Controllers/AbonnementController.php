@@ -6,8 +6,26 @@ use App\Models\Abonnement;
 use App\Models\PlanAbonnement;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\services\SmsService;
+
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
+use Stripe\Exception\ApiErrorException;
+use Stripe\PaymentIntent;
+
 class AbonnementController extends Controller
 {
+
+
+    protected $smsService;
+
+    public function __construct(SmsService $smsService)
+    {
+        $this->smsService = $smsService;
+    }
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -38,21 +56,28 @@ class AbonnementController extends Controller
 
     public function store(Request $request)
     {
+        // Validate the incoming data
         $data = $request->validate([
-            'plan_abonnement_id' => 'required|exists:plan_abonnement,id', // Validate the plan_abonnement_id exists
-            'user_id' => 'required|exists:users,id', // Validate the user_id exists
+            'plan_abonnement_id' => 'required|exists:plan_abonnement,id',
+            'user_id' => 'required|exists:users,id',
             'date_debut' => 'required|date',
             'image' => 'nullable|image',
         ]);
 
-        // Handle image upload
+        // Fetch the associated PlanAbonnement
+        $planAbonnement = PlanAbonnement::findOrFail($data['plan_abonnement_id']);
+
+        // Check if the request has an image
         if ($request->hasFile('image')) {
+            // Store the uploaded image and set it in $data
             $data['image'] = $request->file('image')->store('images/abonnement', 'public');
+        } else {
+            // If no image is provided, use the PlanAbonnement image
+            $data['image'] = $planAbonnement->image ?? null;  // Ensure the PlanAbonnement image is used
         }
 
-        // Create the abonnement for the selected user
-        $planAbonnement = PlanAbonnement::findOrFail($data['plan_abonnement_id']);
-        $abonnement = $planAbonnement->abonnement()->create($data);
+        // Create the Abonnement with the data
+        $abonnement = Abonnement::create($data);
 
         return redirect()->route('abonnement.index')->with('success', 'Abonnement created successfully.');
     }
@@ -121,6 +146,31 @@ class AbonnementController extends Controller
         return redirect()->route('abonnement.index')->with('success', 'abonnement deleted successfully.');
     }
 
+    public function updateStatus(Abonnement $abonnement)
+    {
+        // Toggle the 'is_accepted' status
+        $abonnement->is_accepted = !$abonnement->is_accepted;
+        $abonnement->save();
+
+        // Only proceed if the abonnement is accepted and the user is associated with the abonnement
+        if ($abonnement->is_accepted && $abonnement->user) {
+            $user = $abonnement->user; // Retrieve the user
+
+            // Construct the message to be sent
+            $message = "Hello " . $user->name . ", your subscription for " . $abonnement->planAbonnement->type . " has been accepted!";
+
+            // Send the SMS using the SmsService
+            try {
+                $this->smsService->sendSms($user->telephone, $message);
+            } catch (\Exception $e) {
+                // Redirect with an error if the SMS could not be sent
+                return redirect()->route('abonnement.index')->with('error', 'Subscription updated, but SMS could not be sent.');
+            }
+        }
+
+        // Redirect with a success message if the status was updated
+        return redirect()->route('abonnement.index')->with('success', 'Abonnement status updated successfully.');
+    }
 
     public function subscribe(Request $request)
 {
@@ -145,10 +195,56 @@ class AbonnementController extends Controller
        'user_id' => 1,
         'plan_abonnement_id' => $plan->id,
         'date_debut' => $request->date_debut,
-        // You can add more fields like 'date_fin' or price if needed
+        'image' => $plan->image ,
     ]);
 
     return redirect()->back()->with('success', 'You have successfully subscribed to the ' . $plan->type . ' plan.');
 }
+
+
+
+public function test($id, Request $request)
+{
+    $abonnement = PlanAbonnement::findOrFail($id);
+    $userId = 1; // Replace with the authenticated user ID if needed
+
+    // Store the necessary data in the session to create the subscription later
+    session(['plan_id' => $abonnement->id, 'date_debut' => $request->date_debut, 'user_id' => $userId]);
+
+    Stripe::setApiKey(config('stripe.sk'));
+
+    $session = Session::create([
+        'line_items' => [
+            [
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' =>"Subscription Type " .$abonnement->type,
+                        'date_debut' => $abonnement->date_debut,
+                        'images' => [$abonnement->image && asset('storage/abonnement' . $abonnement->image) ],
+                    ],
+                    'unit_amount' => $abonnement->price * 100,
+                ],
+                'quantity' => 1,
+            ],
+        ],
+        'mode' => 'payment',
+        'success_url' => route('showPlansFront'),
+        'cancel_url' => route('subscribe'),
+    ]);
+    // Create a new Abonnement
+    Abonnement::create([
+        // 'user_id' => $user->id,
+        'user_id' => 1,
+         'plan_abonnement_id' => $abonnement->id,
+         'date_debut' => $request->date_debut,
+         'image' => $abonnement->image ,
+         'is_payed' => true ,
+     ]);
+    return redirect()->away($session->url);
+}
+
+
+
 
 }

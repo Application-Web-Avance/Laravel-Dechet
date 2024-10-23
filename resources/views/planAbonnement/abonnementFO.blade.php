@@ -41,7 +41,7 @@
 <div class="modal fade" id="subscribeModal" tabindex="-1" role="dialog" aria-labelledby="subscribeModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="subscribeForm" action="{{ route('subscribe') }}" method="POST">
+            <form action="{{ route('abonnement.test', $plan->id) }}" method="POST">
                 @csrf
                 <div class="modal-header" style="margin-top: 20px;margin-bottom: 20px ">
                     <h5 class="modal-title" id="subscribeModalLabel">Choose start date for your subscription</h5>
@@ -53,9 +53,14 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light rounded-pill" style="padding-left: 30px;padding-right: 30px" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-dark rounded-pill">Subscribe</button>
-                </div>
+
+                        <div class="text-center mt-4">
+                           <input type="hidden" name="_token" value="{{csrf_token()}}">
+                           <button type="submit"  class="btn btn-dark rounded-pill">Payer {{ number_format($plan->price, 2, ',', ' ') }} DT</button>
+                           <button type="button" class="btn btn-light rounded-pill" style="padding-left: 30px;padding-right: 30px" data-dismiss="modal">Close</button>
+
+                        </div>
+                 </div>
             </form>
         </div>
     </div>
