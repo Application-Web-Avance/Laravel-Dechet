@@ -17,6 +17,14 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'providers' => [
+        Barryvdh\DomPDF\ServiceProvider::class,
+    ],
+
+    'aliases' => [
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -81,8 +89,8 @@ return [
     | to any of the locales which will be supported by the application.
     |
     */
-
-    'locale' => 'en',
+    'locale' => 'fr',
+    // 'locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------

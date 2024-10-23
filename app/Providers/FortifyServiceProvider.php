@@ -6,11 +6,14 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Models\User; // Import the User model
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -18,9 +21,25 @@ class FortifyServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+    //ce code est le responsable de redirection l'ors je clicker sur boutton connecter dans login ( ce relier a code de model user )
     public function register(): void
     {
-        //
+        // Bind the LoginResponse to use custom logic
+        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
+            public function toResponse($request): RedirectResponse
+            {
+                // Get the authenticated user
+                $user = auth()->user();
+
+                // Check if the user is an instance of User
+                if ($user instanceof User) {
+                    // Redirect based on user roles
+                    return redirect($user->getRedirectRoute());
+                }
+
+                return redirect('/login'); // Fallback in case the user is not an instance of User
+            }
+        });
     }
 
     /**
@@ -34,8 +53,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
-
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });

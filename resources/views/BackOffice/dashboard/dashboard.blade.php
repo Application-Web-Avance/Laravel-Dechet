@@ -14,69 +14,24 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col mt-0">
-                                    <h5 class="card-title">Sales</h5>
+                                    <h5 class="card-title">Paiements Effectués</h5>
                                 </div>
 
                                 <div class="col-auto">
                                     <div class="stat text-primary">
-                                        <i class="align-middle" data-feather="truck"></i>
+                                        <i class="align-middle" data-feather="check-circle"></i>
                                     </div>
                                 </div>
                             </div>
-                            <h1 class="mt-1 mb-3">2.382</h1>
-                            <div class="mb-0">
-                                <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -3.65% </span>
-                                <span class="text-muted">Since last week</span>
-                            </div>
+                            <h1 class="mt-1 mb-3">{{ $paiements_effectues  }}</h1>
+
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col mt-0">
-                                    <h5 class="card-title">Visitors</h5>
-                                </div>
-
-                                <div class="col-auto">
-                                    <div class="stat text-primary">
-                                        <i class="align-middle" data-feather="users"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <h1 class="mt-1 mb-3">14.212</h1>
-                            <div class="mb-0">
-                                <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 5.25% </span>
-                                <span class="text-muted">Since last week</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col mt-0">
-                                    <h5 class="card-title">Earnings</h5>
-                                </div>
-
-                                <div class="col-auto">
-                                    <div class="stat text-primary">
-                                        <i class="align-middle" data-feather="dollar-sign"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <h1 class="mt-1 mb-3">$21.300</h1>
-                            <div class="mb-0">
-                                <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 6.65% </span>
-                                <span class="text-muted">Since last week</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col mt-0">
-                                    <h5 class="card-title">Orders</h5>
+                                    <h5 class="card-title">Paiements en Attente</h5>
                                 </div>
 
                                 <div class="col-auto">
@@ -85,13 +40,85 @@
                                     </div>
                                 </div>
                             </div>
-                            <h1 class="mt-1 mb-3">64</h1>
-                            <div class="mb-0">
-                                <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -2.25% </span>
-                                <span class="text-muted">Since last week</span>
-                            </div>
+                            <h1 class="mt-1 mb-3">{{ $paiements_en_attente }}</h1>
+
                         </div>
                     </div>
+                    <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col mt-0">
+                                                        <h5 class="card-title">Annonces non Disponible</h5>
+                                                    </div>
+
+                                                    <div class="col-auto">
+                                                        <div class="stat text-primary">
+                                                            <i class="align-middle" data-feather="x-circle"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <h1 class="mt-1 mb-3">{{  $annonces_en_attente }}</h1>
+
+                                            </div>
+                                        </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">Total des Paiements Effectués</h5>
+                                </div>
+
+                                <div class="col-auto">
+                                    <div class="stat text-primary">
+                                        <i class="align-middle" data-feather="dollar-sign"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3">
+                            {{ number_format($total_paiements, 2, ',', ' ') }} DT
+                            </h1>
+
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">Annonces</h5>
+                                </div>
+
+                                <div class="col-auto">
+                                    <div class="stat text-primary">
+                                        <i class="align-middle" data-feather="archive"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3">{{ $total_annonces }}</h1>
+
+                        </div>
+                    </div>
+                     <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col mt-0">
+                                                        <h5 class="card-title">Annonces disponible</h5>
+                                                    </div>
+
+                                                    <div class="col-auto">
+                                                        <div class="stat text-primary">
+                                                            <i class="align-middle" data-feather="loader"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <h1 class="mt-1 mb-3">{{ $annonces_disponibles }}</h1>
+
+                                            </div>
+                                        </div>
+
+
                 </div>
             </div>
         </div>
@@ -101,11 +128,11 @@
         <div class="card flex-fill w-100">
             <div class="card-header">
 
-                <h5 class="card-title mb-0">Recent Movement</h5>
+                <h5 class="card-title mb-0">Paiements de mouvement récents</h5>
             </div>
             <div class="card-body py-3">
                 <div class="chart chart-sm">
-                    <canvas id="chartjs-dashboard-line"></canvas>
+                    <canvas id="paiementsChart"></canvas>
                 </div>
             </div>
         </div>
@@ -268,5 +295,32 @@
     </div>
 </div>
 </div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('paiementsChart').getContext('2d');
+    var paiementsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: @json($dates),
+            datasets: [{
+                label: 'Paiements au fil du temps',
+                data: @json($paiements_montants),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
 @endsection
 

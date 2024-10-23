@@ -25,7 +25,8 @@ return new class extends Migration
             $table->string('telephone')->nullable(); // Champ pour le téléphone
             $table->string('cin')->nullable(); // Champ pour le CIN
             $table->date('date_naissance')->nullable(); // Champ pour la date de naissance
-            $table->enum('role', ['Responsable_Centre', 'Responsable_Entreprise', 'admin', 'user'])->default('user'); // Champ pour le rôle
+            $table->enum('role', ['Responsable_Centre', 'Responsable_Entreprise', 'admin', 'user','verifier'])->default('user'); // Champ pour le rôle
+            $table->string('nomPrincipale')->nullable(); 
             $table->timestamps(); // Champs de timestamps
         });
     }

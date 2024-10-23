@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom CSS for background */
+.custom-bg {
+    background-image: url('/storage/app/public/images/collectes/loging.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh; /* Ensures full height */
+}

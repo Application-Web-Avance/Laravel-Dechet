@@ -23,15 +23,25 @@ class CreateNewUser implements CreatesNewUsers
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            
             'adresse' => ['nullable', 'string', 'max:255'],
             'telephone' => ['nullable', 'string', 'max:20'],
             'cin' => ['nullable', 'string', 'max:20'],
             'date_naissance' => ['nullable', 'date'],
+            'nomPrincipale' =>  ['nullable', 'string', 'max:255'],
             'role' => ['required', 'in:Responsable_Centre,Responsable_Entreprise,user'], // Validation pour le rôle
             'proof_pdf' => ['nullable', 'file', 'mimes:pdf'], // Validation pour le PDF
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
+
+        // Créer l'utilisateur
+        $role = $input['role'];
+
+        // Change the role to "verifier" if it is Responsable_Centre or Responsable_Entreprise
+        if (in_array($role, ['Responsable_Centre', 'Responsable_Entreprise'])) {
+            $role = 'verifier';
+        } elseif ($role !== 'verifier') { // Set role to "user" if it's not "verifier"
+            $role = 'user';
+        }
 
         // Créer l'utilisateur
         $user = User::create([
@@ -39,10 +49,11 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
             'adresse' => $input['adresse'],
+            'nomPrincipale' => $input['nomPrincipale'],
             'telephone' => $input['telephone'],
             'cin' => $input['cin'],
             'date_naissance' => $input['date_naissance'],
-            'role' => $input['role'], // Assignation du rôle
+            'role' => $role, // Assignation du rôle
         ]);
 
         // Enregistrer dans la table Demanderole si le rôle est Responsable_Centre ou Responsable_Entreprise
@@ -57,7 +68,7 @@ class CreateNewUser implements CreatesNewUsers
             Demanderole::create([
                 'role_requested' => $input['role'],
                 'proof_pdf' => $pdfPath,
-                'nom_centre' => $input['name'], // Utiliser le champ name comme nom_centre
+                'nom_centre' => $input['nomPrincipale'], // Utiliser le champ nomPrincipale comme nom_centre
                 'user_id' => $user->id, // Lier le demandeur à l'utilisateur créé
                 'typedemande' => 'en cours'
             ]);

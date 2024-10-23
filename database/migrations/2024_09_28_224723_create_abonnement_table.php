@@ -8,23 +8,26 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('abonnement', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('plan_abonnement_id')->constrained('plan_abonnement')->onDelete('cascade');
             $table->date('date_debut');
-            $table->string('image')->nullable();
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade'); // Add user_id foreign key
+            $table->date('date_fin');
+            $table->string('etat');
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('abonnement');
     }

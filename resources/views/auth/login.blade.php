@@ -21,26 +21,28 @@
             </div>
 
             <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
+                <x-label for="password" value="{{ __('Mot de passe') }}" />
                 <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
             </div>
 
             <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <x-checkbox id="remember_me" name="remember" />
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
+                @if (Route::has('password.request'))
+                <a class="text-decoration-none me-3" href="{{ route('password.request') }}">
+                        {{ __('Mot de passe oublié?') }}
+                    </a>
+                @endif
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                <a class="text-decoration-none me-3" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
 
-                <x-button class="ml-4">
-                    {{ __('Log in') }}
+
+                <!-- Lien d'inscription -->
+                <a href="{{ route('register') }}" class="text-gray-600 underline ml-4">
+                    {{ __('S’inscrire') }} 
+                </a>
+
+                <x-button class="ml-4" style="background-color: #485E88; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#3b4d6f'" onmouseout="this.style.backgroundColor='#485E88'">
+                    {{ __('Se connecter') }}
                 </x-button>
             </div>
         </form>

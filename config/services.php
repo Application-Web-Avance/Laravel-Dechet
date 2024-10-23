@@ -30,8 +30,10 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
-    'stripe' => [
-        'secret' => env('sk_test_51QBo3DF4aJR6YX4BuQfIAq0S5f7ajprcUGjIjdLgaeikin4hYtKDgUUq6ijgTCRVWVMMYhxUQZYiLk79UWbvR5EK00ks4yhfvE'),
+    'twilio' => [
+        'sid' => env('TWILIO_SID'),
+        'auth_token' => env('TWILIO_AUTH_TOKEN'),
+        'phone_number' => env('TWILIO_PHONE_NUMBER'),
     ],
+
 ];
