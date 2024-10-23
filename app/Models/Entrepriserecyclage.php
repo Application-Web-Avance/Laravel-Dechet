@@ -44,7 +44,7 @@ class Entrepriserecyclage extends Model
 
     public function contrats(): HasMany
     {
-        return $this->hasMany(Contratrecyclage:: class,'enteprise_id') ;
+        return $this->hasMany(Contratrecyclage::class, 'entreprise_id'); // Corrected
     }
     
     public function user(): BelongsTo

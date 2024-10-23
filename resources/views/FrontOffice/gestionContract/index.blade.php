@@ -8,26 +8,72 @@
         </div>
 
         <div class="row g-4 centre-list" id="centre-list-{{ $entreprise->id }}">
-        @foreach ($centres as $index => $centre)
-    <div class="col-md-6 centre-item" data-centre-name="{{ $centre->nom }}" @if ($index >= 1) style="display: none;" @endif>
-        <div class="feature-item p-4 pt-0">
-            <div class="feature-icon p-4 mb-4">
-                <i class="fas fa-building fa-3x"></i>
+    @foreach ($centres as $index => $centre)
+        <div class="col-md-6 centre-item" data-centre-name="{{ $centre->nom }}" @if ($index >= 1) style="display: none;" @endif>
+            <div class="feature-item p-4 pt-0">
+                <div class="feature-icon p-4 mb-4">
+                    <i class="fas fa-building fa-3x"></i>
+                </div>
+                <h4 class="mb-4">{{ $centre->nom }}</h4>
+                <p class="mb-4">{{ $centre->description ?? 'Pas de description disponible.' }}</p>
+                
+                <!-- Check if the centre_id matches and display expected duration -->
+                @if ($entreprise->contrats->contains('centre_id', $centre->id))
+                    @php
+                        // Get the contract associated with the current centre
+                        $contrat = $entreprise->contrats->where('centre_id', $centre->id)->first();
+                        if ($contrat) {
+                            $date_signature = \Carbon\Carbon::parse($contrat->date_signature);
+                            $duree_contract = $contrat->duree_contract; // Assume this is in months
+
+                            // Calculate the final date
+                            $date_final = $date_signature->addMonths($duree_contract);
+
+                            // Calculate the expected duration
+                            if ($date_final->diffInDays(now()) > 31) {
+                                // Display the duration in months
+                                $dateAttend = $date_final->diffInMonths(now());
+                            } else {
+                                // Display the duration in days
+                                $dateAttend = $date_final->diffInDays(now());
+                            }
+                        } else {
+                            $dateAttend = null; // No contract associated
+                        }
+                    @endphp
+
+                    @if ($dateAttend !== null)
+                        <p class="mb-4">
+                            Durée du contrat attend : {{ $dateAttend }} 
+                            @if ($date_final->diffInDays(now()) > 31)
+                                mois
+                            @else
+                                jours
+                            @endif
+                        </p>
+                    @else
+                        <p class="mb-4">
+                            Aucun contrat associé à ce centre.
+                        </p>
+                    @endif
+                @else
+                        <p class="mb-4">
+                            Aucun contrat associé à ce centre.
+                        </p>
+                @endif
+
+
+                <a href="{{ route('contracts.create', ['entreprise' => $entreprise->id, 'centre' => $centre->id]) }}" class="btn btn-primary">
+                    Sélectionner le centre
+                </a>
             </div>
-            <h4 class="mb-4">{{ $centre->nom }}</h4>
-            <p class="mb-4">{{ $centre->description ?? 'Pas de description disponible.' }}</p>
-            <a href="{{ route('contracts.create', ['entreprise' => $entreprise->id, 'centre' => $centre->id]) }}" class="btn btn-primary">
-                Sélectionner le centre
-            </a>
         </div>
-    </div>
+    @endforeach
+</div>
 
-
-
-
-            @endforeach
-        </div>
         
+
+
         <div class="text-center mt-4">
             <button id="show-more-{{ $entreprise->id }}" class="btn btn-secondary show-more-btn">Afficher plus</button>
         </div>
@@ -38,20 +84,12 @@
     </div>
 </div>
 
-
-
-
-
-
-
 <!-- JavaScript for Search Functionality -->
 <script>
 document.querySelectorAll('.show-more-btn').forEach(function(showMoreBtn) {
     showMoreBtn.addEventListener('click', function() {
         const centreListId = this.getAttribute('id').replace('show-more-', 'centre-list-');
         const centreItems = document.querySelectorAll(`#${centreListId} .centre-item`);
-        
-        console.log('Show more clicked for:', centreListId); // Debugging line
         
         centreItems.forEach(function(item) {
             item.style.display = 'block'; // Show all items

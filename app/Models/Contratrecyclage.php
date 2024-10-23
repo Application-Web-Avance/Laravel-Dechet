@@ -51,8 +51,10 @@ class Contratrecyclage extends Model
 
     public function centre(): BelongsTo
     {
-        return $this->belongsTo(Centrederecyclage:: class);
+        return $this->belongsTo(Centrederecyclage::class);
     }
+
+    
 
     public function getDateFinAttribute()
     {

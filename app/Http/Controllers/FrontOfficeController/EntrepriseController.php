@@ -85,7 +85,7 @@ class EntrepriseController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $entreprises = $user->entreprise; // Utilise la relation définie dans le modèle User
+        $entreprises = $user->entreprise()->with(['contrats.centre'])->get();
 
         $centres = Centrederecyclage::all();
 
@@ -112,7 +112,8 @@ class EntrepriseController extends Controller
                 }
             }
         }
-        //$centres = Centrederecyclage::paginate(2);
+
+
 
         return view('FrontOffice.gestionEntreprise.index', compact('entreprises', 'centres','expiringContracts'));
     }
