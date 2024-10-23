@@ -8,6 +8,7 @@
     </div>
 </div>
 
+
 <style>
     .custom-bg {
         /* Couleur de fond par défaut pendant le chargement */

@@ -34,53 +34,95 @@
                         Pages
                     </li>
 
-                    <!-- Dashboard link with dynamic "active" class -->
-                    <li class="sidebar-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <a class="sidebar-link" href="{{ route('dashboard') }}">
-                            <i class="align-middle" data-feather="sliders"></i>
-                            <span class="align-middle">Dashboard</span>
+                    <li class="sidebar-item active">
+                        <a class="sidebar-link" href="{{ asset('back content/index.html') }}">
+                            <i class="align-middle" data-feather="sliders"></i> <span
+                                class="align-middle">Dashboard</span>
                         </a>
                     </li>
 
-                    <!-- Evenement link with dynamic "active" class -->
-                    <li class="sidebar-item {{ request()->routeIs('evenement.index') ? 'active' : '' }}">
-                        <a class="sidebar-link" href="{{ route('evenement.index') }}">
-                            <i class="align-middle" data-feather="calendar"></i>
-                            <span class="align-middle">Evenement</span>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ asset('back content/pages-profile.html') }}">
+                            <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item {{ request()->routeIs('annoncedechets.index') ? 'active' : '' }}">
-                                            <a class="sidebar-link" href="{{ route('annoncedechets.index') }}">
-                                                <i class="align-middle" data-feather="package"></i>
-                                                <span class="align-middle">Annonce de déchet</span>
-                                            </a>
-                     </li>
-                    <li class="sidebar-item {{ request()->routeIs('paymentdechet.index') ? 'active' : '' }}">
-                                                                 <a class="sidebar-link"  href="{{ route('paymentdechet.index') }}">
-                                                                    <i class="align-middle" data-feather="dollar-sign"></i>
-                                                                     <span class="align-middle">Liste de paiement</span>
-                                                                 </a>
-                      </li>
-                    <li class="sidebar-item {{ request()->routeIs('historique.paiements') ? 'active' : '' }}">
-                                                                 <a class="sidebar-link"  href="{{ route('historique.paiements') }}">
-                                                                    <i class="align-middle" data-feather="archive"></i>
-                                                                     <span class="align-middle">historique paiements</span>
-                                                             </a>
-                      </li>
-
-                    <!-- Users link with dynamic "active" class -->
-                    <li class="sidebar-item {{ request()->routeIs('usersA.index') ? 'active' : '' }}">
-                        <a class="sidebar-link" href="{{ route('usersA.index') }}">
-                            <i class="align-middle" data-feather="user"></i>
-                            <span class="align-middle">Utilisateurs à Vérifier</span>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ asset('back content/pages-sign-in.html') }}">
+                            <i class="align-middle" data-feather="log-in"></i> <span class="align-middle">Sign In</span>
                         </a>
                     </li>
 
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ asset('back content/pages-sign-up.html') }}">
+                            <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Sign
+                                Up</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ asset('back content/pages-blank.html') }}">
+                            <i class="align-middle" data-feather="book"></i> <span class="align-middle">Blank</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-header">
+                        Tools & Components
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ asset('back content/ui-buttons.html') }}">
+                            <i class="align-middle" data-feather="square"></i> <span class="align-middle">Buttons</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ asset('back content/ui-forms.html') }}">
+                            <i class="align-middle" data-feather="check-square"></i> <span
+                                class="align-middle">Forms</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ asset('back content/ui-cards.html') }}">
+                            <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Cards</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ asset('back content/ui-typography.html') }}">
+                            <i class="align-middle" data-feather="align-left"></i> <span
+                                class="align-middle">Typography</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ asset('back content/icons-feather.html') }}">
+                            <i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Icons</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-header">
+                        Plugins & Addons
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ asset('back content/charts-chartjs.html') }}">
+                            <i class="align-middle" data-feather="bar-chart-2"></i> <span
+                                class="align-middle">Charts</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ asset('back content/maps-google.html') }}">
+                            <i class="align-middle" data-feather="map"></i> <span class="align-middle">Maps</span>
+                        </a>
+                    </li>
                 </ul>
+
+
             </div>
         </nav>
-
 
         <div class="main">
             <nav class="navbar navbar-expand navbar-light navbar-bg">
@@ -245,51 +287,21 @@
 
                             <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
                                 data-bs-toggle="dropdown">
-                                <img src="{{ asset('back content/img/avatars/avatar.jpg') }}"
-                                    class="avatar img-fluid rounded me-1" alt="Charles Hall" /> <span
-                                    class="text-dark">{{ auth()->user()->name}}</span>
+                                <img src="img/avatars/avatar.jpg" class="avatar img-fluid rounded me-1"
+                                    alt="Charles Hall" /> <span class="text-dark">Charles Hall</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1"
                                         data-feather="user"></i> Profile</a>
-
-                                <!-- Lien de déconnexion avec un formulaire -->
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    {{ __('Log out') }}
-                                </a>
-
-                                <!-- Formulaire de déconnexion -->
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                    style="display: none;">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-                            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
-                                data-bs-toggle="dropdown">
-                                <img src="{{ asset('back content/img/avatars/avatar.jpg') }}"
-                                    class="avatar img-fluid rounded me-1" alt="Charles Hall" /> <span
-                                    class="text-dark">{{ auth()->user()->name }}</span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1"
-                                        data-feather="user"></i> Profile</a>
-
-                                <!-- Lien de déconnexion avec un formulaire -->
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    {{ __('Log out') }}
-                                </a>
-
-                                <!-- Formulaire de déconnexion -->
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                    style="display: none;">
-                                    @csrf
-                                </form>
+                                <a class="dropdown-item" href="#"><i class="align-middle me-1"
+                                        data-feather="pie-chart"></i> Analytics</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="index.html"><i class="align-middle me-1"
+                                        data-feather="settings"></i> Settings & Privacy</a>
+                                <a class="dropdown-item" href="#"><i class="align-middle me-1"
+                                        data-feather="help-circle"></i> Help Center</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Log out</a>
                             </div>
                         </li>
                     </ul>
@@ -297,15 +309,69 @@
             </nav>
 
             <main class="content">
-                @yield('content')
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Edit Abonnement</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <!-- Form starts here -->
+                        <form action="{{ route('abonnement.update', $abonnement->id) }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT') <!-- Indicate that this is a PUT request -->
+
+                            <!-- Select Plan Abonnement -->
+                            <div class="mb-3">
+                                <label for="plan_abonnement_id" class="form-label">Select Plan Abonnement</label>
+                                <select class="form-select" name="plan_abonnement_id" id="plan_abonnement_id"
+                                    required>
+                                    <option selected disabled>Select a plan</option>
+                                    @foreach ($plans->all() as $plan)
+                                        <option value="{{ $plan->id }}"
+                                            {{ $plan->id == $abonnement->plan_abonnement_id ? 'selected' : '' }}>
+                                            {{ $plan->type }} - ${{ $plan->price }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Date Input -->
+                            <div class="mb-3">
+                                <label for="date_debut" class="form-label">Start Date</label>
+                                <input type="date" class="form-control" name="date_debut" id="date_debut"
+                                    value="{{ $abonnement->date_debut }}" required>
+                            </div>
+
+                            <!-- Image Upload -->
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Upload New Image (optional)</label>
+                                <input type="file" class="form-control" name="image" accept="image/*">
+                                @if ($abonnement->image)
+                                    <p>Current Image: <img src="{{ asset('storage/' . $abonnement->image) }}"
+                                            alt="Current Image" style="max-width: 100px;"></p>
+                                @endif
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary" style="width: 100px;">Update</button>
+                            </div>
+                        </form>
+                        <!-- End of form -->
+
+                    </div>
+                </div>
             </main>
 
-            @include('BackOffice.LayoutBack.footer')
+
+
+
 
         </div>
     </div>
 
-    <script src="{{ asset('back content/js/app.js') }}"></script>
+    <script src="js/app.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
