@@ -165,11 +165,30 @@
                         </form>
                         <div class="nav-btn px-3">
                             <button class="btn-search btn btn-primary btn-md-square rounded-circle flex-shrink-0"
-                                data-bs-toggle="modal" data-bs-target="#searchModal"><i
-                                    class="fas fa-search"></i></button>
-                            <a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Get a
-                                Quote</a>
+                                data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search"></i></button>
+                            <a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Get a Quote</a>
+
+                            <!-- Displaying subscription status -->
+                            <span class="subscription-status">
+                                @if(isset($statusData))
+                                    @switch($statusData['status'])
+                                        @case('active')
+                                            <span class="text-success">Active Plan: {{ $statusData['plan'] }}</span>
+                                            @break
+                                        @case('trial')
+                                            <span class="text-warning">Trial: {{ $statusData['days_remaining'] }} days remaining</span>
+                                            @break
+                                        @case('expired')
+                                            <span class="text-danger">Subscription Expired</span>
+                                            @break
+                                    @endswitch
+                                @else
+                                    <span class="text-danger">No Subscription Info Available</span>
+                                @endif
+                            </span>
                         </div>
+
+
                     </div>
                 </div>
                 <div class="d-none d-xl-flex flex-shrink-0 ps-4">

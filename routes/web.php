@@ -136,6 +136,7 @@ Route::prefix('front')->middleware('auth')->group(function () {
     })->name('payment.cancel');
     Route::post('/test/{id}', [AbonnementController::class, 'test'])->name('abonnement.test');
 
+    Route::get('/navbar', [AbonnementController::class, 'showNav'])->name('front.showNav');
 });
 
 //Prefix pour le frontOffice :
