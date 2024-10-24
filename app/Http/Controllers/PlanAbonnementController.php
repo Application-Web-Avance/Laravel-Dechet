@@ -45,7 +45,6 @@ class PlanAbonnementController extends Controller
                          ->with('success', 'Plan Abonnement created successfully.');
     }
 
-
     // Show the form for editing the specified resource
     public function edit($id)
     {
@@ -60,7 +59,7 @@ class PlanAbonnementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PlanAbonnement $planAbonnement)
+    public function update(Request $request, $id,PlanAbonnement $planAbonnement)
     {
         // Validate request data
         $data = $request->validate([
@@ -81,6 +80,7 @@ class PlanAbonnementController extends Controller
             $data['image'] = $request->file('image')->store('images/abonnement', 'public');
         }
 
+        $planAbonnement = PlanAbonnement::where('id', $id);
         $planAbonnement->update($data);
 
         // Redirect back with success message
