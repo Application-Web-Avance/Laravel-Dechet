@@ -98,6 +98,8 @@ Route::prefix('back')->middleware('auth')->group(function () {
     Route::get('/historique-paiements', [PaymentDechetController::class, 'historiquePaiements'])->name('historique.paiements');
     Route::get('/paymentdechet', [PaymentDechetController::class, 'index'])->name('paymentdechet.index');
     Route::get('/paymentdechet/{id}', [PaymentDechetController::class, 'show'])->name('paymentdechet.show');
+    Route::post('/test/{id}', [AnnonceDechetsController::class, 'test'])->name('AnnonceDechet.test');
+
 });
 
 // Prefix for the frontOffice:

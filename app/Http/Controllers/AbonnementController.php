@@ -6,23 +6,24 @@ use App\Models\Abonnement;
 use App\Models\PlanAbonnement;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\services\SmsService;
-
+//use App\services\SmsService;
+use Twilio\Rest\Client;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent;
+use Twilio\Http\CurlClient;
 
 class AbonnementController extends Controller
 {
 
 
-    protected $smsService;
-
-    public function __construct(SmsService $smsService)
-    {
-        $this->smsService = $smsService;
-    }
+//    protected $smsService;
+//
+//    public function __construct(SmsService $smsService)
+//    {
+//        $this->smsService = $smsService;
+//    }
 
 
 
@@ -156,15 +157,26 @@ class AbonnementController extends Controller
         if ($abonnement->is_accepted && $abonnement->user) {
             $user = $abonnement->user; // Retrieve the user
 
-            // Construct the message to be sent
-            $message = "Hello " . $user->name . ", your subscription for " . $abonnement->planAbonnement->type . " has been accepted!";
+//            $message = "Hello " . $user->name . ", your subscription for " . $abonnement->planAbonnement->type . " has been accepted!";
+            $sid = config('services.twilio.sid');
+            $auth_token = config('services.twilio.auth_token');
+            $twilio_phone_number = config('services.twilio.phone_number');
+            $user_phone_number = $user->telephone;
 
-            // Send the SMS using the SmsService
+
             try {
-                $this->smsService->sendSms($user->telephone, $message);
-            } catch (\Exception $e) {
-                // Redirect with an error if the SMS could not be sent
-                return redirect()->route('abonnement.index')->with('error', 'Subscription updated, but SMS could not be sent.');
+                $twilio = new Client($sid, $auth_token);
+                $twilio->setHttpClient(new CurlClient([
+                    CURLOPT_SSL_VERIFYPEER => false,
+                ]));
+                $message = $twilio->messages->create(
+                    $user_phone_number,
+                    [
+                        'from' => $twilio_phone_number,
+                        'body' => "Bonjour {$user->name}, votre paiement de {$abonnement->planAbonnement->type} TND a été effectué avec succès. Merci pour votre confiance."
+                    ]
+                );            } catch (\Exception $e) {
+                return redirect()->route('abonnement.index')->with('error', 'Subscription updated, but SMS could not be sent.' . $e->getMessage());
             }
         }
 

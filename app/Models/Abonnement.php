@@ -18,22 +18,15 @@ class Abonnement extends Model
         'is_payed'
     ];
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'abonnement';
 
+    public function planAbonnement()
+    {
+        return $this->belongsTo(PlanAbonnement::class);
+    }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = true;
 }

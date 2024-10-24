@@ -4,6 +4,7 @@ namespace App\Http\Controllers\BackOfficeController;
 
 use Stripe\Stripe;
 use App\Models\User;
+use Twilio\Http\CurlClient;
 use Twilio\Rest\Client;
 use Stripe\PaymentIntent;
 use Illuminate\Http\Request;
@@ -71,14 +72,14 @@ class AnnonceDechetsController extends Controller
             'price' => 'required|numeric',
             'image' => 'nullable|image|max:2048',
         ]);
-    
+
         // Handle the image upload
         $imagePath = null;
         if ($request->hasFile('image')) {
             // Store the image in the 'public/annonces' directory
             $imagePath = $request->file('image')->store('something', 'public');
         }
-    
+
         // Create the new announcement in the database
         AnnonceDechet::create([
             'utilisateur_id' => $request->input('utilisateur_id'),
@@ -91,10 +92,10 @@ class AnnonceDechetsController extends Controller
             'price' => $request->input('price'),
             'image' => $imagePath,  // Store the image path in the database
         ]);
-    
+
         return redirect()->route('annoncedechets.index')->with('success', 'Annonce créée avec succès.');
     }
-    
+
 
 
    public function show($id)
@@ -237,7 +238,9 @@ public function paymentSuccess($id)
             $user_phone_number = $user->telephone;
 
             $twilio = new Client($sid, $auth_token);
-
+            $twilio->setHttpClient(new CurlClient([
+                CURLOPT_SSL_VERIFYPEER => false,
+            ]));
             $message = $twilio->messages->create(
                 $user_phone_number,
                 [
