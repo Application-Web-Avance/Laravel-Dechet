@@ -28,8 +28,8 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
-        <!-- Customized Bootstrap Stylesheet -->
-        <link href="{{ asset('front content/css/bootstrap.min.css')}}" rel="stylesheet">
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{ asset('front content/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('front content/css/style.css') }}" rel="stylesheet">
@@ -103,9 +103,9 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav mx-0 mx-lg-auto">
                         <a href="{{ route('FrontHome') }}" class="nav-item nav-link active">Home</a>
-                        <a href="{{route('front.entreprise.index')}}" class="nav-item nav-link">mes entreprises</a>
-                        <a href="{{route('front.showPlans')}}" class="nav-item nav-link">mes abonnement</a>
-                        <a href="{{route('centres.front')}}" class="nav-item nav-link">Centres</a>
+                        <a href="{{ route('front.entreprise.index') }}" class="nav-item nav-link">mes entreprises</a>
+                        <a href="{{ route('front.showPlans') }}" class="nav-item nav-link">mes abonnement</a>
+                        <a href="{{ route('centres.front') }}" class="nav-item nav-link">Centres</a>
                         <a href="blog.html" class="nav-item nav-link">Blog</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link" data-bs-toggle="dropdown">
@@ -127,7 +127,8 @@
                                     <span class="indicator">{{ count($expiringContracts ?? []) }}</span>
                                 </div>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0"
+                                aria-labelledby="alertsDropdown">
                                 <div class="dropdown-menu-header">
                                     {{ count($expiringContracts ?? []) }} New Notifications
                                 </div>
@@ -136,15 +137,19 @@
 
                                     <div class="list-group">
                                         @forelse($expiringContracts as $contract)
-                                            <a href="/contracts/{{ $contract['contract_id'] }}" class="list-group-item">
+                                            <a href="/contracts/{{ $contract['contract_id'] }}"
+                                                class="list-group-item">
                                                 <div class="row g-0 align-items-center">
                                                     <div class="col-2">
                                                         <i class="text-warning" data-feather="bell"></i>
                                                     </div>
                                                     <div class="col-10">
-                                                        <div class="text-dark">Contract expiring for {{ $contract['entreprise'] }}</div>
-                                                        <div class="text-muted small mt-1">Signed on: {{ $contract['signature_date'] }}</div>
-                                                        <div class="text-muted small mt-1">Expires on: {{ $contract['expiration_date'] }}</div>
+                                                        <div class="text-dark">Contract expiring for
+                                                            {{ $contract['entreprise'] }}</div>
+                                                        <div class="text-muted small mt-1">Signed on:
+                                                            {{ $contract['signature_date'] }}</div>
+                                                        <div class="text-muted small mt-1">Expires on:
+                                                            {{ $contract['expiration_date'] }}</div>
                                                     </div>
                                                 </div>
                                             </a>
@@ -165,22 +170,41 @@
                         </form>
                         <div class="nav-btn px-3">
                             <button class="btn-search btn btn-primary btn-md-square rounded-circle flex-shrink-0"
-                                data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search"></i></button>
-                            <a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0"> Get a Quote</a>
+                                data-bs-toggle="modal" data-bs-target="#searchModal"><i
+                                    class="fas fa-search"></i></button>
+                            <a href="#" class="btn btn-primary rounded-pill py-2 px-4 ms-3 flex-shrink-0">Get a
+                                Quote</a>
 
                             <!-- Displaying subscription status -->
                             <span class="subscription-status">
-                                @if(isset($statusData))
+                                @if (!empty($statusData) && isset($statusData['status']))
                                     @switch($statusData['status'])
-                                        @case('active')
-                                            <span class="text-success">Active Plan: {{ $statusData['plan'] }} - {{ $statusData['message'] }}</span>
-                                            @break
                                         @case('trial')
-                                            <span class="text-warning">Trial: {{ $statusData['days_remaining'] }} days remaining - {{ $statusData['message'] }}</span>
-                                            @break
+                                            <span class="text-warning">
+                                                {{ $statusData['message'] ?? 'Your free trial ends in ' . $statusData['days_remaining'] . ' days' }}
+                                            </span>
+                                        @break
+
+                                        @case('active')
+                                            <span class="text-success">
+                                                {{ $statusData['message'] ?? 'Active Plan: ' . ucfirst($statusData['plan']) . '. Your subscription ends in ' . $statusData['days_remaining'] . ' days.' }}
+                                            </span>
+                                        @break
+
+                                        @case('pending')
+                                            <span class="text-info">
+                                                {{ $statusData['message'] ?? 'Your abonnement will be active in ' . $statusData['days_until_active'] . ' days.' }}
+                                            </span>
+                                        @break
+
                                         @case('expired')
-                                            <span class="text-danger">Subscription Expired - {{ $statusData['message'] }}</span>
-                                            @break
+                                            <span class="text-danger">
+                                                {{ $statusData['message'] ?? 'Your subscription has expired.' }}
+                                            </span>
+                                        @break
+
+                                        @default
+                                            <span class="text-danger">Unknown subscription status.</span>
                                     @endswitch
                                 @else
                                     <span class="text-danger">No Subscription Info Available</span>
@@ -188,6 +212,7 @@
                             </span>
 
                         </div>
+
 
 
                     </div>
@@ -234,9 +259,9 @@
 
 
 
-        <!-- Modal Search End -->
-        @yield('content')
-        @yield('entreprise_content')
+    <!-- Modal Search End -->
+    @yield('content')
+    @yield('entreprise_content')
 
 
 
@@ -249,16 +274,16 @@
             class="fa fa-arrow-up"></i></a>
 
 
-        <!-- JavaScript Libraries -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="{{ asset('front content/lib/wow/wow.min.js')}}"></script>
-        <script src="{{ asset('front content/lib/easing/easing.min.js')}}"></script>
-        <script src="{{ asset('front content/lib/waypoints/waypoints.min.js')}}"></script>
-        <script src="{{ asset('front content/lib/counterup/counterup.min.js')}}"></script>
-        <script src="{{ asset('front content/lib/lightbox/js/lightbox.min.js')}}"></script>
-        <script src="{{ asset('front content/lib/owlcarousel/owl.carousel.min.js')}}"></script>
-        <script src="{{ asset ('back content/js/app.js')}}"></script>
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('front content/lib/wow/wow.min.js') }}"></script>
+    <script src="{{ asset('front content/lib/easing/easing.min.js') }}"></script>
+    <script src="{{ asset('front content/lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ asset('front content/lib/counterup/counterup.min.js') }}"></script>
+    <script src="{{ asset('front content/lib/lightbox/js/lightbox.min.js') }}"></script>
+    <script src="{{ asset('front content/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('back content/js/app.js') }}"></script>
 
 
     <!-- Template Javascript -->

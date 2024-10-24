@@ -12,7 +12,7 @@
                     <div class="card-body">
 
                         <!-- Form starts here -->
-                        <form action="{{ route('abonnement.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('abonnement.store') }}" method="POST" enctype="multipart/form-data" novalidate>
                             @csrf <!-- Add CSRF token for form security -->
 
                             <!-- Select Plan Abonnement -->
@@ -21,9 +21,12 @@
                                 <select class="form-select" name="plan_abonnement_id" id="plan_abonnement_id" required>
                                     <option selected disabled>Select a plan</option>
                                     @foreach ($plans as $plan)
-                                        <option value="{{ $plan->id }}">{{ $plan->type }}</option>
+                                        <option value="{{ $plan->id }}" {{ old('plan_abonnement_id') == $plan->id ? 'selected' : '' }}>{{ $plan->type }}</option>
                                     @endforeach
                                 </select>
+                                @error('plan_abonnement_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <!-- Select User -->
@@ -32,21 +35,30 @@
                                 <select class="form-select" name="user_id" id="user_id" required>
                                     <option selected disabled>Select a user</option>
                                     @foreach ($users as $user)
-                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
                                     @endforeach
                                 </select>
+                                @error('user_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <!-- Date Input -->
                             <div class="mb-3">
                                 <label for="date_debut" class="form-label">Start Date</label>
-                                <input type="date" class="form-control" name="date_debut" id="date_debut" required>
+                                <input type="date" class="form-control" name="date_debut" id="date_debut" required value="{{ old('date_debut') }}">
+                                @error('date_debut')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <!-- Image Upload -->
                             <div class="mb-3">
                                 <label for="image" class="form-label">Upload Image</label>
                                 <input type="file" class="form-control" name="image" accept="image/*">
+                                @error('image')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <!-- Submit Button -->
@@ -54,6 +66,7 @@
                                 <button type="submit" class="btn btn-primary" style="width: 100px;">Submit</button>
                             </div>
                         </form>
+
                         <!-- End of form -->
 
                     </div>

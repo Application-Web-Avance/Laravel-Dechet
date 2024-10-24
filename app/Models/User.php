@@ -31,6 +31,7 @@ class User extends Authenticatable
         'cin', // Assurez-vous que le CIN est inclus
         'date_naissance', // Assurez-vous que la date de naissance est incluse
         'role', // Ajoutez le champ role
+        'is_blocked',
     ];
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PlanAbonnement;
+use App\Http\Controllers\AbonnementController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,12 +16,7 @@ class PlanAbonnementController extends Controller
         return view('planAbonnement.planAbonnement', compact('planAbonnement'));
     }
 
-    // Display PlanAbonnement on the front office
-    public function showPlansFront()
-    {
-        $plans = PlanAbonnement::all();
-        return view('planAbonnement.abonnementFO', compact('plans'));
-    }
+
 
     // Show the form for creating a new resource
     public function create()
@@ -49,6 +45,7 @@ class PlanAbonnementController extends Controller
                          ->with('success', 'Plan Abonnement created successfully.');
     }
 
+
     // Show the form for editing the specified resource
     public function edit($id)
     {
@@ -63,7 +60,7 @@ class PlanAbonnementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id,PlanAbonnement $planAbonnement)
+    public function update(Request $request, PlanAbonnement $planAbonnement)
     {
         // Validate request data
         $data = $request->validate([
@@ -84,7 +81,6 @@ class PlanAbonnementController extends Controller
             $data['image'] = $request->file('image')->store('images/abonnement', 'public');
         }
 
-        $planAbonnement = PlanAbonnement::where('id', $id);
         $planAbonnement->update($data);
 
         // Redirect back with success message
