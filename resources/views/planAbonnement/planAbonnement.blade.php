@@ -9,7 +9,8 @@
         <div class="col-12">
             <div class="card flex-fill">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Abonnements</h5>
+                    <h3 class="mb-0"style="color:green;">Liste des Plans</h3>
+
                     <a href="{{ url('/back/planabonnement/create') }}" class="btn btn-primary btn-md">Add New</a>
                 </div>
                 <table class="table table-hover my-0 w-100"> <!-- Table taking full width -->
