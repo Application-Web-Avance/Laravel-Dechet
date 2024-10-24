@@ -173,19 +173,20 @@
                                 @if(isset($statusData))
                                     @switch($statusData['status'])
                                         @case('active')
-                                            <span class="text-success">Active Plan: {{ $statusData['plan'] }}</span>
+                                            <span class="text-success">Active Plan: {{ $statusData['plan'] }} - {{ $statusData['message'] }}</span>
                                             @break
                                         @case('trial')
-                                            <span class="text-warning">Trial: {{ $statusData['days_remaining'] }} days remaining</span>
+                                            <span class="text-warning">Trial: {{ $statusData['days_remaining'] }} days remaining - {{ $statusData['message'] }}</span>
                                             @break
                                         @case('expired')
-                                            <span class="text-danger">Subscription Expired</span>
+                                            <span class="text-danger">Subscription Expired - {{ $statusData['message'] }}</span>
                                             @break
                                     @endswitch
                                 @else
                                     <span class="text-danger">No Subscription Info Available</span>
                                 @endif
                             </span>
+
                         </div>
 
 

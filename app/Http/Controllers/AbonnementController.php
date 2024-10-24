@@ -184,33 +184,11 @@ class AbonnementController extends Controller
         return redirect()->route('abonnement.index')->with('success', 'Abonnement status updated successfully.');
     }
 
-    public function subscribe(Request $request)
-{
-    // Get the selected plan
-    $plan = PlanAbonnement::findOrFail($request->plan_id);
-    // Get the authenticated user
-    //$user = Auth::user();
-    // Check if user already has an active subscription for the same plan
-
-   /* if ($user->abonnements()->where('plan_abonnement_id', $plan->id)->exists()) {
-        return redirect()->back()->with('error', 'You are already subscribed to this plan.');
-    }*/
-    // Create a new Abonnement
-    Abonnement::create([
-       // 'user_id' => $user->id,
-       'user_id' => 1,
-        'plan_abonnement_id' => $plan->id,
-        'date_debut' => $request->date_debut,
-        'image' => $plan->image ,
-    ]);
-
-    return redirect()->back()->with('success', 'You have successfully subscribed to the ' . $plan->type . ' plan.');
-}
 
 public function test($id, Request $request)
 {
     $abonnement = PlanAbonnement::findOrFail($id);
-    $userId = Auth::user();; // Replace with the authenticated user ID if needed
+    $userId = Auth::id(); // Get the authenticated user's ID
 
     // Store the necessary data in the session to create the subscription later
     session(['plan_id' => $abonnement->id, 'date_debut' => $request->date_debut, 'user_id' => $userId]);
@@ -223,9 +201,8 @@ public function test($id, Request $request)
                 'price_data' => [
                     'currency' => 'eur',
                     'product_data' => [
-                        'name' =>"Subscription Type " .$abonnement->type,
-                        'date_debut' => $abonnement->date_debut,
-                        'images' => [$abonnement->image && asset('storage/abonnement' . $abonnement->image) ],
+                        'name' => "Subscription Type " . $abonnement->type,
+                        'images' => [$abonnement->image ? asset('storage/' . $abonnement->image) : null],
                     ],
                     'unit_amount' => $abonnement->price * 100,
                 ],
@@ -236,18 +213,18 @@ public function test($id, Request $request)
         'success_url' => route('front.showPlans'),
         'cancel_url' => route('subscribe'),
     ]);
+
     // Create a new Abonnement
     Abonnement::create([
-        // 'user_id' => $user->id,
-        'user_id' =>$userId,
-         'plan_abonnement_id' => $abonnement->id,
-         'date_debut' => $request->date_debut,
-         'image' => $abonnement->image ,
-         'is_payed' => true ,
-     ]);
+        'user_id' => $userId,
+        'plan_abonnement_id' => $abonnement->id,
+        'date_debut' => $request->date_debut,
+        'image' => $abonnement->image,
+        'is_payed' => true,
+    ]);
+
     return redirect()->away($session->url);
 }
-
 
 public function getSubscriptionStatus()
 {
@@ -256,33 +233,66 @@ public function getSubscriptionStatus()
     // Calculate the free trial period (30 days from the user's registration date)
     $createdAt = $user->created_at;
     $trialEnd = $createdAt->copy()->addMonth(); // Adds 1 month (30 days) to the registration date
-    $daysRemaining = $trialEnd->diffInDays(now(), false); // Calculate remaining days (negative if trial expired)
+    $daysRemainingTrial = $trialEnd->diffInDays(now(), false); // Calculate remaining days (negative if trial expired)
 
     // Get the user's active subscription
     $activeSubscription = Abonnement::where('user_id', $user->id)
         ->where('date_debut', '<=', now()) // Subscription has started
         ->first();
 
+    // If the user doesn't have an active subscription
+    if (!$activeSubscription) {
+        if ($daysRemainingTrial > 0) {
+            return response()->json([
+                'status' => 'trial',
+                'days_remaining' => $daysRemainingTrial,
+                'message' => "Your free trial ends in {$daysRemainingTrial} days.",
+            ]);
+        } else {
+            return response()->json(['status' => 'expired', 'message' => 'Your free trial has expired.']);
+        }
+    }
+
     // If there's an active subscription
-    if ($activeSubscription) {
+    $dateDebut = $activeSubscription->date_debut;
+    if ($dateDebut > now()) {
+        $daysUntilActive = $dateDebut->diffInDays(now()); // Calculate days until active
         return response()->json([
             'status' => 'active',
-            'plan' => $activeSubscription->planAbonnement->type,
-            'start_date' => $activeSubscription->date_debut->format('Y-m-d'),
+            'message' => "Your abonnement will be active in {$daysUntilActive} days.",
         ]);
-    }
+    } else {
+        // Calculate days remaining based on subscription type
+        $planType = $activeSubscription->planAbonnement->type; // Assuming this returns 'mensuel', 'trimestriel', etc.
+        $durationDays = 0;
 
-    // Return the trial status if no active subscription
-    if ($daysRemaining > 0) {
+        switch ($planType) {
+            case 'mensuel':
+                $durationDays = 30;
+                break;
+            case 'trimestriel':
+                $durationDays = 90;
+                break;
+            case 'semestriel':
+                $durationDays = 180; // Adjusted from your description (previously it was 60 days)
+                break;
+            case 'annuel':
+                $durationDays = 365;
+                break;
+        }
+
+        // Calculate the end date of the subscription
+        $endDate = $dateDebut->copy()->addDays($durationDays);
+        $daysRemaining = $endDate->diffInDays(now()); // Calculate remaining days until subscription ends
+
         return response()->json([
-            'status' => 'trial',
-            'days_remaining' => $daysRemaining,
+            'status' => 'active',
+            'message' => "Your abonnement will end in {$daysRemaining} days.",
+            'plan' => $planType,
         ]);
     }
-
-    // If the trial period has expired and no active subscription
-    return response()->json(['status' => 'expired']);
 }
+
 
 public function showNav()
 {
