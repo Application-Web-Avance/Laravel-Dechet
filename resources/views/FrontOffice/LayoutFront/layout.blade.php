@@ -104,6 +104,7 @@
                     <div class="navbar-nav mx-0 mx-lg-auto">
                         <a href="{{ route('FrontHome') }}" class="nav-item nav-link active">Home</a>
                         <a href="{{route('front.entreprise.index')}}" class="nav-item nav-link">mes entreprises</a>
+                        <a href="{{route('front.showPlans')}}" class="nav-item nav-link">mes abonnement</a>
                         <a href="{{route('centres.front')}}" class="nav-item nav-link">Centres</a>
                         <a href="blog.html" class="nav-item nav-link">Blog</a>
                         <div class="nav-item dropdown">

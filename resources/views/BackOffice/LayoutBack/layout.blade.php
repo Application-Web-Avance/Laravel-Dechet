@@ -83,6 +83,19 @@
                         <span class="align-middle">Gestion Des Centres</span>
                     </a>
                 </li>
+                <li class="sidebar-item {{ request()->routeIs('gCentre.index') ? 'active' : '' }}">
+                    <a class="sidebar-link" href="{{ route('planabonnement.index') }}">
+                        <i class="align-middle" data-feather="layers"></i>
+                        <span class="align-middle">Plan Abonnement</span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{ request()->routeIs('gCentre.index') ? 'active' : '' }}">
+                    <a class="sidebar-link" href="{{ route('abonnement.index') }}">
+                        <i class="align-middle" data-feather="credit-card"></i>
+                        <span class="align-middle">Users Abonnement</span>
+                    </a>
+                </li>
+
             </ul>
         </div>
     </nav>

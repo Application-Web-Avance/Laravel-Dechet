@@ -119,7 +119,7 @@ Route::prefix('front')->middleware('auth')->group(function () {
     Route::get('/entreprises/{entreprise_id}/contracts/{centre_id}/create', [ContractsController::class, 'create'])->name('contracts.create');
     Route::post('/entreprises/contracts/create/{id}/{id2}', [ContractsController::class, 'store'])->name('contracts.store');
     Route::get('/entreprises/{entreprise}/centres/{centre}/contracts/create', [ContractsController::class, 'createContract'])->name('contracts.create');
-    Route::get('/plans', [PlanAbonnementController::class, 'showPlansFront'])->name('showPlansFront');
+    Route::get('/plans', [PlanAbonnementController::class, 'showPlansFront'])->name('front.showPlans');
     // Subscription route (change this line)
     Route::post('/subscribe', [AbonnementController::class, 'subscribe'])->name('subscribe'); // This should handle the subscription logic
 

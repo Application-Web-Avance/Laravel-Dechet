@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use App\Models\Abonnement;
 use App\Models\PlanAbonnement;
 use Illuminate\Http\Request;
@@ -186,21 +186,15 @@ class AbonnementController extends Controller
 
     public function subscribe(Request $request)
 {
-
-
     // Get the selected plan
     $plan = PlanAbonnement::findOrFail($request->plan_id);
-
     // Get the authenticated user
     //$user = Auth::user();
-
     // Check if user already has an active subscription for the same plan
-
 
    /* if ($user->abonnements()->where('plan_abonnement_id', $plan->id)->exists()) {
         return redirect()->back()->with('error', 'You are already subscribed to this plan.');
     }*/
-
     // Create a new Abonnement
     Abonnement::create([
        // 'user_id' => $user->id,
@@ -213,12 +207,10 @@ class AbonnementController extends Controller
     return redirect()->back()->with('success', 'You have successfully subscribed to the ' . $plan->type . ' plan.');
 }
 
-
-
 public function test($id, Request $request)
 {
     $abonnement = PlanAbonnement::findOrFail($id);
-    $userId = 1; // Replace with the authenticated user ID if needed
+    $userId = Auth::user();; // Replace with the authenticated user ID if needed
 
     // Store the necessary data in the session to create the subscription later
     session(['plan_id' => $abonnement->id, 'date_debut' => $request->date_debut, 'user_id' => $userId]);
@@ -241,7 +233,7 @@ public function test($id, Request $request)
             ],
         ],
         'mode' => 'payment',
-        'success_url' => route('showPlansFront'),
+        'success_url' => route('front.showPlans'),
         'cancel_url' => route('subscribe'),
     ]);
     // Create a new Abonnement
