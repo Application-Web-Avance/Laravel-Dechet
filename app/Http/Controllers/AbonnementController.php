@@ -239,7 +239,7 @@ public function test($id, Request $request)
     // Create a new Abonnement
     Abonnement::create([
         // 'user_id' => $user->id,
-        'user_id' => 1,
+        'user_id' =>$userId,
          'plan_abonnement_id' => $abonnement->id,
          'date_debut' => $request->date_debut,
          'image' => $abonnement->image ,
